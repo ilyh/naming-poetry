@@ -4,10 +4,16 @@
       <span class="text-stone-500 text-base">{{ name.surname }}</span>
       <span class="text-stone-900 font-bold tracking-wide">{{ name.givenName }}</span>
     </div>
-    <div
-      class="text-xs text-stone-400 truncate mb-2"
-      :title="(name.sources || []).join('\n\n')"
-    >{{ (name.sources || [])[0] || '—' }}</div>
+    <div class="text-xs text-stone-400 space-y-0.5 mb-2">
+      <div
+        v-for="(char, idx) in name.givenName.split('')"
+        :key="idx"
+        class="flex items-start gap-1 min-w-0"
+      >
+        <span class="font-medium text-stone-500 shrink-0">{{ char }}</span>
+        <span class="truncate">{{ (name.sources || [])[idx] ? '— ' + (name.sources || [])[idx] : '— 未知' }}</span>
+      </div>
+    </div>
     <button @click="$emit('detail', name)" class="text-xs text-amber-600 hover:text-amber-800 transition">
       溯源
     </button>

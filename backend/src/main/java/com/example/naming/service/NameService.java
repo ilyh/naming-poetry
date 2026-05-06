@@ -79,9 +79,7 @@ public class NameService {
                 if (usedPoemIds.contains(pw.getPoem().getId())) continue;
                 usedPoemIds.add(pw.getPoem().getId());
                 givenName.append(pw.getWord());
-                if (pw.getPoem() != null && pw.getPoem().getContent() != null) {
-                    sources.add(pw.getPoem().getContent());
-                }
+                sources.add(getExcerpt(pw));
             }
 
             if (givenName.length() != req.getLength()) continue;
@@ -106,5 +104,50 @@ public class NameService {
 
     public Page<NameRecord> getHistory(int page, int size) {
         return nameRecordRepository.findAllByOrderByCreatedAtDesc(PageRequest.of(page, size));
+    }
+
+    private String getExcerpt(PoemWord pw) {
+        String content = pw.getPoem().getContent();
+        if (content == null || content.isEmpty()) return "";
+        int cleanPos = pw.getPosition();
+
+        List<Integer> bounds = new ArrayList<>();
+        bounds.add(0);
+        for (int i = 0; i < content.length(); i++) {
+            if (isPunct(content.charAt(i))) bounds.add(i + 1);
+        }
+        bounds.add(content.length());
+
+        int cleanIdx = 0;
+        int origPos = -1;
+        for (int i = 0; i < content.length(); i++) {
+            if (content.charAt(i) >= 0x4E00 && content.charAt(i) <= 0x9FFF) {
+                if (cleanIdx == cleanPos) { origPos = i; break; }
+                cleanIdx++;
+            }
+        }
+        if (origPos < 0) return content;
+
+        int verseIdx = -1;
+        for (int i = 0; i < bounds.size() - 1; i++) {
+            if (origPos >= bounds.get(i) && origPos < bounds.get(i + 1)) {
+                verseIdx = i; break;
+            }
+        }
+        if (verseIdx < 0) return content;
+
+        int verseCount = bounds.size() - 1;
+        int startIdx = verseIdx;
+        int endIdx = Math.min(verseIdx + 2, verseCount);
+        if (verseIdx == verseCount - 1) {
+            startIdx = Math.max(0, verseIdx - 1);
+            endIdx = verseIdx + 1;
+        }
+        return content.substring(bounds.get(startIdx), bounds.get(endIdx)).trim();
+    }
+
+    private boolean isPunct(char c) {
+        return c == '，' || c == '。' || c == '！' || c == '？'
+            || c == '；' || c == '：' || c == '、';
     }
 }

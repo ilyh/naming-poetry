@@ -1,14 +1,14 @@
 <template>
-  <div class="flex border-b border-stone-200">
+  <div class="flex border-b border-stone-300/30">
     <button
       v-for="tab in tabs"
       :key="tab.key"
       @click="$emit('update:modelValue', tab.key)"
       :class="[
-        'px-4 py-2 text-sm transition border-b-2 -mb-[2px]',
+        'px-3 py-2 text-sm transition border-b-2 -mb-[2px] font-medium tracking-wider',
         modelValue === tab.key
-          ? 'border-amber-600 text-amber-700 font-medium'
-          : 'border-transparent text-stone-500 hover:text-stone-700'
+          ? 'border-teal-warm text-teal-warm'
+          : 'border-transparent text-warm-gray hover:text-warm-brown'
       ]"
     >{{ tab.label }}</button>
   </div>

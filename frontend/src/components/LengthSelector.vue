@@ -1,14 +1,17 @@
 <template>
   <div class="flex items-center gap-3">
-    <span class="text-stone-600 text-sm">名字字数</span>
+    <span class="text-warm-gray text-sm font-bold tracking-wider">名字字数</span>
     <button
       v-for="n in [1, 2]"
       :key="n"
       @click="$emit('update:modelValue', n)"
       :class="[
-        'px-3 py-1 rounded text-sm transition',
-        modelValue === n ? 'bg-amber-600 text-white' : 'bg-stone-200 text-stone-600 hover:bg-stone-300'
+        'px-3 py-1 rounded-full text-sm font-medium transition',
+        modelValue === n
+          ? 'text-white'
+          : 'text-warm-gray border border-stone-300/40 bg-cream/80 hover:-translate-y-0.5'
       ]"
+      :style="modelValue === n ? { background:'linear-gradient(135deg,#1f5e55,#2f7f73)' } : {}"
     >{{ n }}字</button>
   </div>
 </template>

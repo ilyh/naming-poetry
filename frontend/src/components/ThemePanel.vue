@@ -1,28 +1,38 @@
 <template>
   <div>
-    <div class="flex flex-wrap justify-center gap-2 mb-6">
+    <div class="flex flex-wrap justify-center gap-2 mb-4">
       <button
         v-for="theme in allThemes"
         :key="theme"
         @click="toggleTheme(theme)"
         :class="[
-          'px-3 py-1 rounded-full text-sm transition',
+          'px-3 py-1.5 rounded-full text-sm transition font-medium',
           selectedThemes.includes(theme)
-            ? 'bg-amber-600 text-white'
-            : 'bg-stone-200 text-stone-600 hover:bg-stone-300'
+            ? 'text-white'
+            : 'text-warm-gray border border-stone-300/40 bg-cream/80 hover:-translate-y-0.5'
         ]"
+        :style="selectedThemes.includes(theme) ? { background:'linear-gradient(135deg,#1f5e55,#2f7f73)' } : {}"
       >{{ theme }}</button>
     </div>
-    <div class="flex justify-center mb-6">
+    <div class="flex justify-center gap-3 mb-6">
       <button @click="generate" :disabled="loading || selectedThemes.length === 0"
-        class="px-8 py-2 bg-amber-600 text-white rounded-lg hover:bg-amber-700 disabled:opacity-50 transition">
-        {{ loading ? '生成中...' : '生成名字' }}
+        class="px-6 py-2.5 rounded-full font-bold text-sm tracking-wider transition"
+        style="background:linear-gradient(135deg,#1f5e55,#2f7f73); color:#fffdf8; box-shadow:0 20px 34px -24px rgba(31,94,85,0.72)">
+        {{ loading ? '翻检诗卷中…' : '生成 6 个名字' }}
+      </button>
+      <button v-if="names.length > 0" @click="generate" :disabled="loading"
+        class="px-5 py-2.5 rounded-full font-bold text-sm tracking-wider text-teal-warm border border-teal-warm/20 bg-cream/80 hover:-translate-y-0.5 transition">
+        换一组
       </button>
     </div>
     <div v-if="names.length > 0" class="grid grid-cols-1 md:grid-cols-2 gap-4">
-      <NameCard v-for="(name, i) in names" :key="i" :name="name" @detail="detailName = name" />
+      <NameCard v-for="(name, i) in names" :key="i" :name="name" :index="i" @detail="detailName = name" />
     </div>
-    <div v-else class="text-center text-stone-400 py-12">选择意境标签，点击生成</div>
+    <div v-else class="flex flex-col items-center justify-center min-h-[23rem] rounded-2xl border border-dashed border-teal-warm/20 text-center" style="background:linear-gradient(180deg, rgba(255,253,248,0.88), rgba(239,228,209,0.56))">
+      <p class="text-amber-warm text-xs font-bold tracking-widest">尚未生成</p>
+      <h3 class="font-serif-name text-2xl text-warm-brown mt-3">选择意境标签，点击生成</h3>
+      <p class="text-sm text-warm-gray mt-2 max-w-md">系统会从匹配意境的诗句中提取名字候选。</p>
+    </div>
     <NameDetailModal v-if="detailName" :name="detailName" @close="detailName = null" />
   </div>
 </template>

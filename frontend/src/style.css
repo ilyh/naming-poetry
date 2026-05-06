@@ -1,1 +1,43 @@
 @import "tailwindcss";
+
+@theme {
+  --color-cream: #f9f4eb;
+  --color-cream-dark: #efe4d3;
+  --color-warm-brown: #2f261f;
+  --color-warm-gray: #65594c;
+  --color-teal-warm: #1f5e55;
+  --color-teal-light: #2f7f73;
+  --color-amber-warm: #b06a3c;
+}
+
+/* Serif font stack for names */
+.font-serif-name {
+  font-family: "Source Han Serif SC", "Noto Serif SC", "Songti SC", "SimSun", serif;
+}
+
+/* Glass card effect */
+.glass-card {
+  background: rgba(251, 247, 241, 0.84);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(89, 72, 56, 0.16);
+  box-shadow: 0 24px 42px -36px rgba(70, 54, 36, 0.55);
+}
+
+/* Card entrance animation */
+@keyframes card-rise {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.card-enter {
+  animation: card-rise 360ms ease both;
+}
+
+/* Name char highlight in sentence */
+.sentence-highlight {
+  color: #1f5e55;
+  font-weight: 700;
+  background: linear-gradient(180deg, transparent 45%, rgba(47, 127, 115, 0.18) 45%);
+  font-style: normal;
+}

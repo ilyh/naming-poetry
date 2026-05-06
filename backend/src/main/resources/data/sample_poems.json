@@ -1,0 +1,22 @@
+[
+  {"title": "静夜思", "author": "李白", "source": "tang", "dynasty": "唐", "content": "床前明月光，疑是地上霜。举头望明月，低头思故乡。"},
+  {"title": "登鹳雀楼", "author": "王之涣", "source": "tang", "dynasty": "唐", "content": "白日依山尽，黄河入海流。欲穷千里目，更上一层楼。"},
+  {"title": "春晓", "author": "孟浩然", "source": "tang", "dynasty": "唐", "content": "春眠不觉晓，处处闻啼鸟。夜来风雨声，花落知多少。"},
+  {"title": "江雪", "author": "柳宗元", "source": "tang", "dynasty": "唐", "content": "千山鸟飞绝，万径人踪灭。孤舟蓑笠翁，独钓寒江雪。"},
+  {"title": "相思", "author": "王维", "source": "tang", "dynasty": "唐", "content": "红豆生南国，春来发几枝。愿君多采撷，此物最相思。"},
+  {"title": "望庐山瀑布", "author": "李白", "source": "tang", "dynasty": "唐", "content": "日照香炉生紫烟，遥看瀑布挂前川。飞流直下三千尺，疑是银河落九天。"},
+  {"title": "山居秋暝", "author": "王维", "source": "tang", "dynasty": "唐", "content": "空山新雨后，天气晚来秋。明月松间照，清泉石上流。"},
+  {"title": "送元二使安西", "author": "王维", "source": "tang", "dynasty": "唐", "content": "渭城朝雨浥轻尘，客舍青青柳色新。劝君更尽一杯酒，西出阳关无故人。"},
+  {"title": "关雎", "author": "佚名", "source": "shijing", "dynasty": "先秦", "content": "关关雎鸠，在河之洲。窈窕淑女，君子好逑。"},
+  {"title": "蒹葭", "author": "佚名", "source": "shijing", "dynasty": "先秦", "content": "蒹葭苍苍，白露为霜。所谓伊人，在水一方。"},
+  {"title": "离骚（节选）", "author": "屈原", "source": "chuci", "dynasty": "先秦", "content": "长太息以掩涕兮，哀民生之多艰。余虽好修姱以鞿羁兮，謇朝谇而夕替。"},
+  {"title": "水调歌头", "author": "苏轼", "source": "song", "dynasty": "宋", "content": "明月几时有，把酒问青天。不知天上宫阙，今夕是何年。"},
+  {"title": "念奴娇·赤壁怀古", "author": "苏轼", "source": "song", "dynasty": "宋", "content": "大江东去，浪淘尽，千古风流人物。故垒西边，人道是，三国周郎赤壁。"},
+  {"title": "声声慢", "author": "李清照", "source": "song", "dynasty": "宋", "content": "寻寻觅觅，冷冷清清，凄凄惨惨戚戚。乍暖还寒时候，最难将息。"},
+  {"title": "青玉案·元夕", "author": "辛弃疾", "source": "song", "dynasty": "宋", "content": "东风夜放花千树，更吹落，星如雨。宝马雕车香满路。"},
+  {"title": "雨霖铃", "author": "柳永", "source": "song", "dynasty": "宋", "content": "寒蝉凄切，对长亭晚，骤雨初歇。都门帐饮无绪，留恋处，兰舟催发。"},
+  {"title": "将进酒", "author": "李白", "source": "tang", "dynasty": "唐", "content": "君不见黄河之水天上来，奔流到海不复回。君不见高堂明镜悲白发，朝如青丝暮成雪。"},
+  {"title": "枫桥夜泊", "author": "张继", "source": "tang", "dynasty": "唐", "content": "月落乌啼霜满天，江枫渔火对愁眠。姑苏城外寒山寺，夜半钟声到客船。"},
+  {"title": "鹿柴", "author": "王维", "source": "tang", "dynasty": "唐", "content": "空山不见人，但闻人语响。返景入深林，复照青苔上。"},
+  {"title": "竹里馆", "author": "王维", "source": "tang", "dynasty": "唐", "content": "独坐幽篁里，弹琴复长啸。深林人不知，明月来相照。"}
+]

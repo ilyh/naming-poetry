@@ -13,14 +13,14 @@ public class GenerateResponse {
         private String text;
         private String surname;
         private String givenName;
-        private String source;
+        private List<String> sources;
         private List<String> themes;
 
-        public NameItem(String text, String surname, String givenName, String source, List<String> themes) {
+        public NameItem(String text, String surname, String givenName, List<String> sources, List<String> themes) {
             this.text = text;
             this.surname = surname;
             this.givenName = givenName;
-            this.source = source;
+            this.sources = sources;
             this.themes = themes;
         }
 
@@ -30,8 +30,8 @@ public class GenerateResponse {
         public void setSurname(String surname) { this.surname = surname; }
         public String getGivenName() { return givenName; }
         public void setGivenName(String givenName) { this.givenName = givenName; }
-        public String getSource() { return source; }
-        public void setSource(String source) { this.source = source; }
+        public List<String> getSources() { return sources; }
+        public void setSources(List<String> sources) { this.sources = sources; }
         public List<String> getThemes() { return themes; }
         public void setThemes(List<String> themes) { this.themes = themes; }
     }

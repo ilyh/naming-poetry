@@ -4,7 +4,10 @@
       <span class="text-stone-500 text-base">{{ name.surname }}</span>
       <span class="text-stone-900 font-bold tracking-wide">{{ name.givenName }}</span>
     </div>
-    <div class="text-xs text-stone-400 truncate mb-2" :title="name.source">{{ name.source || '—' }}</div>
+    <div
+      class="text-xs text-stone-400 truncate mb-2"
+      :title="(name.sources || []).join('\n\n')"
+    >{{ (name.sources || [])[0] || '—' }}</div>
     <button @click="$emit('detail', name)" class="text-xs text-amber-600 hover:text-amber-800 transition">
       溯源
     </button>

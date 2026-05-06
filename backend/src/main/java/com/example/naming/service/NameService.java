@@ -88,10 +88,8 @@ public class NameService {
 
             String surname = req.getSurname() != null ? req.getSurname() : "";
             String fullName = surname + givenName.toString();
-            String sourceStr = sources.isEmpty() ? "" : sources.get(0);
-
             GenerateResponse.NameItem item = new GenerateResponse.NameItem(
-                fullName, surname, givenName.toString(), sourceStr, null
+                fullName, surname, givenName.toString(), sources, null
             );
             names.add(item);
 

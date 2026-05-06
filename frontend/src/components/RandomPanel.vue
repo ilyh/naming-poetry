@@ -6,7 +6,7 @@
         {{ loading ? '生成中...' : '生成名字' }}
       </button>
     </div>
-    <div v-if="names.length > 0" class="grid grid-cols-2 md:grid-cols-3 gap-4">
+    <div v-if="names.length > 0" class="grid grid-cols-1 md:grid-cols-2 gap-4">
       <NameCard v-for="(name, i) in names" :key="i" :name="name" @detail="detailName = name" />
     </div>
     <div v-else class="text-center text-stone-400 py-12">点击上方按钮开始生成</div>

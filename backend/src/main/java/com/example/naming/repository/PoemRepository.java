@@ -6,4 +6,5 @@ import java.util.List;
 
 public interface PoemRepository extends JpaRepository<Poem, Long> {
     List<Poem> findBySource(String source);
+    boolean existsByTitleAndAuthorAndSource(String title, String author, String source);
 }

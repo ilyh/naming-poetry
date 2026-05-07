@@ -38,25 +38,42 @@ public class DataImportService {
 
     @PostConstruct
     public void importOnStartup() {
-        if (poemRepository.count() > 0) return;
+        importFromResource("data/sample_poems.json");
+    }
+
+    public String importData() {
+        return importFromResource("data/sample_poems.json");
+    }
+
+    private String importFromResource(String resourcePath) {
         try {
-            InputStream is = getClass().getClassLoader().getResourceAsStream("data/sample_poems.json");
-            if (is == null) { System.out.println("No sample_poems.json found, skipping import"); return; }
+            InputStream is = getClass().getClassLoader().getResourceAsStream(resourcePath);
+            if (is == null) { return "No " + resourcePath + " found, skipping import"; }
             JsonNode root = objectMapper.readTree(is);
+            int imported = 0, skipped = 0;
             for (JsonNode node : root) {
-                importPoem(node);
+                if (importPoem(node)) imported++;
+                else skipped++;
             }
-            System.out.println("Data import complete: " + poemRepository.count() + " poems");
+            return "Import done: " + imported + " new poems, " + skipped + " skipped (already exist)";
         } catch (Exception e) {
-            System.err.println("Data import failed: " + e.getMessage());
+            return "Data import failed: " + e.getMessage();
         }
     }
 
-    private void importPoem(JsonNode node) {
+    private boolean importPoem(JsonNode node) {
+        String title = node.has("title") ? node.get("title").asText() : "无题";
+        String author = node.has("author") ? node.get("author").asText() : "佚名";
+        String source = node.has("source") ? node.get("source").asText() : "tang";
+
+        if (poemRepository.existsByTitleAndAuthorAndSource(title, author, source)) {
+            return false;
+        }
+
         Poem poem = new Poem();
-        poem.setTitle(node.has("title") ? node.get("title").asText() : "无题");
-        poem.setAuthor(node.has("author") ? node.get("author").asText() : "佚名");
-        poem.setSource(node.has("source") ? node.get("source").asText() : "tang");
+        poem.setTitle(title);
+        poem.setAuthor(author);
+        poem.setSource(source);
         poem.setDynasty(node.has("dynasty") ? node.get("dynasty").asText() : "");
         String content = node.has("content") ? node.get("content").asText() : "";
         poem.setContent(content);
@@ -82,6 +99,7 @@ public class DataImportService {
             pw.setMeaningTag(assignTags(String.valueOf(c)));
             poemWordRepository.save(pw);
         }
+        return true;
     }
 
     private String assignTags(String word) {

@@ -3,6 +3,7 @@ package com.example.naming.controller;
 import com.example.naming.dto.GenerateRequest;
 import com.example.naming.dto.GenerateResponse;
 import com.example.naming.entity.NameRecord;
+import com.example.naming.service.DataImportService;
 import com.example.naming.service.NameService;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
@@ -13,9 +14,11 @@ import org.springframework.web.bind.annotation.*;
 public class NameController {
 
     private final NameService nameService;
+    private final DataImportService dataImportService;
 
-    public NameController(NameService nameService) {
+    public NameController(NameService nameService, DataImportService dataImportService) {
         this.nameService = nameService;
+        this.dataImportService = dataImportService;
     }
 
     @PostMapping("/random")
@@ -46,5 +49,10 @@ public class NameController {
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "20") int size) {
         return ResponseEntity.ok(nameService.getHistory(page, size));
+    }
+
+    @PostMapping("/admin/import")
+    public ResponseEntity<String> importPoems() {
+        return ResponseEntity.ok(dataImportService.importData());
     }
 }

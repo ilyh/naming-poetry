@@ -17,3 +17,7 @@ export function generateTheme(params) {
 export function getHistory(page = 0, size = 20) {
   return api.get('/name/history', { params: { page, size } })
 }
+
+export function getStats() {
+  return api.get('/name/stats')
+}

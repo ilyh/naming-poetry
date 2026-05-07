@@ -27,7 +27,8 @@
 </template>
 
 <script setup>
-import { computed } from 'vue'
+import { computed, ref, onMounted } from 'vue'
+import { getStats } from '../api/index.js'
 
 const props = defineProps({
   modelValue: { type: Array, default: () => [] }
@@ -39,7 +40,7 @@ const selected = computed({
   set: (val) => emit('update:modelValue', val)
 })
 
-const books = [
+const defaults = [
   { value: 'shijing', name: '诗经', count: 100, description: '先秦风雅，适合温润清朗的名字。' },
   { value: 'chuci', name: '楚辞', count: 28, description: '瑰丽浪漫，适合大气华美的名字。' },
   { value: 'tang', name: '唐诗', count: 200, description: '意象明朗，适合开阔俊逸的名字。' },
@@ -48,6 +49,20 @@ const books = [
   { value: 'gushi', name: '古诗', count: 11, description: '经典凝练，适合耐看沉静的名字。' },
   { value: 'cifu', name: '著名辞赋', count: 30, description: '铺陈华采，适合丰沛典雅的名字。' },
 ]
+
+const books = ref([...defaults])
+
+onMounted(async () => {
+  try {
+    const { data } = await getStats()
+    books.value = defaults.map(b => ({
+      ...b,
+      count: data[b.value] || b.count
+    }))
+  } catch (e) {
+    // keep defaults on error
+  }
+})
 
 function toggle(value) {
   const arr = [...selected.value]

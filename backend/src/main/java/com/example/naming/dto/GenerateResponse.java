@@ -15,6 +15,7 @@ public class GenerateResponse {
         private String givenName;
         private List<String> sources;
         private List<String> themes;
+        private String sourceNote;
 
         public NameItem(String text, String surname, String givenName, List<String> sources, List<String> themes) {
             this.text = text;
@@ -34,5 +35,7 @@ public class GenerateResponse {
         public void setSources(List<String> sources) { this.sources = sources; }
         public List<String> getThemes() { return themes; }
         public void setThemes(List<String> themes) { this.themes = themes; }
+        public String getSourceNote() { return sourceNote; }
+        public void setSourceNote(String sourceNote) { this.sourceNote = sourceNote; }
     }
 }

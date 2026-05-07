@@ -20,6 +20,16 @@ public class NameService {
     private final NameRecordRepository nameRecordRepository;
     private final Random random = new Random();
 
+    private static final Map<String, String> SOURCE_NAMES = Map.of(
+        "shijing", "诗经",
+        "chuci", "楚辞",
+        "tang", "唐诗",
+        "song", "宋词",
+        "yuefu", "乐府诗集",
+        "gushi", "古诗",
+        "cifu", "著名辞赋"
+    );
+
     private static final Set<Character> BAD_CHARS = new HashSet<>(Arrays.asList(
         '胸','鬼','懒','禽','鸟','鸡','我','邪','罪','凶','丑','仇','鼠','蟋','蟀','淫',
         '秽','妹','狐','鸡','鸭','蝇','悔','鱼','肉','苦','犬','吠','窥','血','丧','饥',
@@ -125,6 +135,7 @@ public class NameService {
             GenerateResponse.NameItem item = new GenerateResponse.NameItem(
                 fullName, surname, givenName, sources, null
             );
+            item.setSourceNote(formatSourceNote(poem));
             names.add(item);
 
             NameRecord record = new NameRecord();
@@ -176,5 +187,14 @@ public class NameService {
 
     public Page<NameRecord> getHistory(int page, int size) {
         return nameRecordRepository.findAllByOrderByCreatedAtDesc(PageRequest.of(page, size));
+    }
+
+    private String formatSourceNote(Poem poem) {
+        String sourceName = SOURCE_NAMES.getOrDefault(poem.getSource(), poem.getSource());
+        String note = sourceName + "·" + poem.getTitle();
+        if (poem.getAuthor() != null && !poem.getAuthor().isEmpty()) {
+            note += " 作者 " + poem.getAuthor();
+        }
+        return note;
     }
 }

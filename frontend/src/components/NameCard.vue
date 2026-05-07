@@ -16,7 +16,7 @@
     <p class="text-base text-warm-brown leading-relaxed mt-2" v-html="highlightedSentence"></p>
 
     <div class="mt-auto pt-3 border-t border-stone-300/40 flex justify-between gap-2 text-xs text-warm-gray">
-      <span>出处：{{ name.sources?.[0] || '未知' }}</span>
+      <span>出处：{{ name.sourceNote || (name.sources?.[0] || '未知') }}</span>
     </div>
   </div>
 </template>

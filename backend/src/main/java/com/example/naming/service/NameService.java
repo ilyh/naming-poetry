@@ -6,6 +6,7 @@ import com.example.naming.entity.NameRecord;
 import com.example.naming.entity.Poem;
 import com.example.naming.entity.PoemWord;
 import com.example.naming.repository.NameRecordRepository;
+import com.example.naming.repository.PoemRepository;
 import com.example.naming.repository.PoemWordRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -16,9 +17,12 @@ import java.util.*;
 @Service
 public class NameService {
 
+    private final PoemRepository poemRepository;
     private final PoemWordRepository poemWordRepository;
     private final NameRecordRepository nameRecordRepository;
     private final Random random = new Random();
+
+    private static final int RANDOM_POEM_SAMPLE = 300;
 
     private static final Map<String, String> SOURCE_NAMES = Map.of(
         "shijing", "诗经",
@@ -38,14 +42,21 @@ public class NameService {
         '姻','匪','婆','羞','辱'
     ));
 
-    public NameService(PoemWordRepository poemWordRepository, NameRecordRepository nameRecordRepository) {
+    public NameService(PoemRepository poemRepository, PoemWordRepository poemWordRepository, NameRecordRepository nameRecordRepository) {
+        this.poemRepository = poemRepository;
         this.poemWordRepository = poemWordRepository;
         this.nameRecordRepository = nameRecordRepository;
     }
 
     public GenerateResponse generateRandom(GenerateRequest req) {
-        List<PoemWord> candidates = getCandidates(req.getSources());
-        return buildResponse(req, candidates, null);
+        List<String> sources = req.getSources();
+        List<Poem> poems;
+        if (sources != null && !sources.isEmpty()) {
+            poems = poemRepository.findRandomBySources(sources, RANDOM_POEM_SAMPLE);
+        } else {
+            poems = poemRepository.findRandom(RANDOM_POEM_SAMPLE);
+        }
+        return buildResponse(req, poems, null);
     }
 
     public GenerateResponse generateByKeyword(GenerateRequest req) {
@@ -56,7 +67,8 @@ public class NameService {
         } else {
             candidates = poemWordRepository.findByWord(keyword);
         }
-        return buildResponse(req, candidates, keyword);
+        List<Poem> poems = extractPoems(candidates);
+        return buildResponse(req, poems, keyword);
     }
 
     public GenerateResponse generateByTheme(GenerateRequest req) {
@@ -67,26 +79,22 @@ public class NameService {
         } else {
             candidates = poemWordRepository.findByMeaningTags(themes);
         }
-        return buildResponse(req, candidates, null);
+        List<Poem> poems = extractPoems(candidates);
+        return buildResponse(req, poems, null);
     }
 
-    private List<PoemWord> getCandidates(List<String> sources) {
-        if (sources != null && !sources.isEmpty()) {
-            return poemWordRepository.findBySources(sources);
+    private List<Poem> extractPoems(List<PoemWord> words) {
+        Map<Long, Poem> map = new LinkedHashMap<>();
+        for (PoemWord pw : words) {
+            map.putIfAbsent(pw.getPoem().getId(), pw.getPoem());
         }
-        return poemWordRepository.findAll();
+        return new ArrayList<>(map.values());
     }
 
-    private GenerateResponse buildResponse(GenerateRequest req, List<PoemWord> candidates, String keyword) {
-        if (candidates.isEmpty()) {
+    private GenerateResponse buildResponse(GenerateRequest req, List<Poem> poems, String keyword) {
+        if (poems.isEmpty()) {
             return new GenerateResponse(Collections.emptyList());
         }
-
-        Map<Long, Poem> poemMap = new LinkedHashMap<>();
-        for (PoemWord pw : candidates) {
-            poemMap.putIfAbsent(pw.getPoem().getId(), pw.getPoem());
-        }
-        List<Poem> poems = new ArrayList<>(poemMap.values());
 
         List<GenerateResponse.NameItem> names = new ArrayList<>();
         int maxAttempts = req.getCount() * 30;

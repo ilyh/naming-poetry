@@ -50,9 +50,14 @@ public class DataImportService {
             InputStream is = getClass().getClassLoader().getResourceAsStream(resourcePath);
             if (is == null) { return "No " + resourcePath + " found, skipping import"; }
             JsonNode root = objectMapper.readTree(is);
+
+            // 一次性加载全部已有诗词键到内存，避免逐条查询
+            Set<String> existingKeys = poemRepository.findAllKeys();
+            System.out.println("Existing poems in DB: " + existingKeys.size());
+
             int imported = 0, skipped = 0;
             for (JsonNode node : root) {
-                if (importPoem(node)) imported++;
+                if (importPoem(node, existingKeys)) imported++;
                 else skipped++;
             }
             return "Import done: " + imported + " new poems, " + skipped + " skipped (already exist)";
@@ -61,12 +66,13 @@ public class DataImportService {
         }
     }
 
-    private boolean importPoem(JsonNode node) {
+    private boolean importPoem(JsonNode node, Set<String> existingKeys) {
         String title = node.has("title") ? node.get("title").asText() : "无题";
         String author = node.has("author") ? node.get("author").asText() : "佚名";
         String source = node.has("source") ? node.get("source").asText() : "tang";
 
-        if (poemRepository.existsByTitleAndAuthorAndSource(title, author, source)) {
+        String key = title + "|" + author + "|" + source;
+        if (existingKeys.contains(key)) {
             return false;
         }
 
@@ -78,6 +84,7 @@ public class DataImportService {
         String content = node.has("content") ? node.get("content").asText() : "";
         poem.setContent(content);
         poem = poemRepository.save(poem);
+        existingKeys.add(key);
 
         String cleanContent = content.replaceAll("[，。！？；：、\"'（）《》\\[\\]\\s]", "");
         for (int i = 0; i < cleanContent.length(); i++) {

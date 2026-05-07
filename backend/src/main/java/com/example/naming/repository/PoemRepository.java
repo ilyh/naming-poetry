@@ -4,7 +4,7 @@ import com.example.naming.entity.Poem;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import java.util.List;
-import java.util.Map;
+import java.util.Set;
 
 public interface PoemRepository extends JpaRepository<Poem, Long> {
     List<Poem> findBySource(String source);
@@ -12,4 +12,7 @@ public interface PoemRepository extends JpaRepository<Poem, Long> {
 
     @Query("SELECT p.source, COUNT(p) FROM Poem p GROUP BY p.source")
     List<Object[]> countBySource();
+
+    @Query("SELECT CONCAT(p.title, '|', p.author, '|', p.source) FROM Poem p")
+    Set<String> findAllKeys();
 }

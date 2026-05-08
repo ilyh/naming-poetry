@@ -184,9 +184,9 @@ public class NameService {
             List<NameRecord> records = names.stream()
                 .map(n -> {
                     NameRecord r = new NameRecord();
-                    r.setSurname(n.surname());
-                    r.setGivenName(n.givenName());
-                    r.setFullName(n.fullName());
+                    r.setSurname(n.getSurname());
+                    r.setGivenName(n.getGivenName());
+                    r.setFullName(n.getText());
                     r.setMode(mode);
                     return r;
                 })

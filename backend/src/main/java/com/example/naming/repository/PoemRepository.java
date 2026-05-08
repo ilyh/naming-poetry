@@ -17,9 +17,7 @@ public interface PoemRepository extends JpaRepository<Poem, Long> {
     @Query("SELECT CONCAT(p.title, '|', p.author, '|', p.source) FROM Poem p")
     Set<String> findAllKeys();
 
-    @Query(value = "SELECT * FROM poem ORDER BY RAND() LIMIT :limit", nativeQuery = true)
-    List<Poem> findRandom(@Param("limit") int limit);
+    List<Poem> findAllByIdIn(List<Long> ids);
 
-    @Query(value = "SELECT * FROM poem WHERE source IN :sources ORDER BY RAND() LIMIT :limit", nativeQuery = true)
-    List<Poem> findRandomBySources(@Param("sources") List<String> sources, @Param("limit") int limit);
+    Long countBySourceIn(List<String> sources);
 }

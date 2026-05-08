@@ -24,6 +24,9 @@ public class NameService {
 
     private static final int RANDOM_POEM_SAMPLE = 300;
 
+    private final List<Poem> cachedPoems;
+    private final List<Long> allPoemIds;
+
     private static final Map<String, String> SOURCE_NAMES = Map.of(
         "shijing", "诗经",
         "chuci", "楚辞",
@@ -58,17 +61,35 @@ public class NameService {
         this.poemRepository = poemRepository;
         this.poemWordRepository = poemWordRepository;
         this.nameRecordRepository = nameRecordRepository;
+        this.allPoemIds = new ArrayList<>();
+        this.cachedPoems = new ArrayList<>();
+        loadPoemsToCache();
+    }
+
+    private void loadPoemsToCache() {
+        List<Poem> all = poemRepository.findAll();
+        this.cachedPoems.addAll(all);
+        for (Poem p : all) {
+            this.allPoemIds.add(p.getId());
+        }
     }
 
     public GenerateResponse generateRandom(GenerateRequest req) {
         List<String> sources = req.getSources();
-        List<Poem> poems;
-        if (sources != null && !sources.isEmpty()) {
-            poems = poemRepository.findRandomBySources(sources, RANDOM_POEM_SAMPLE);
-        } else {
-            poems = poemRepository.findRandom(RANDOM_POEM_SAMPLE);
+        List<Poem> poems = samplePoemsFromCache(sources, RANDOM_POEM_SAMPLE);
+        return buildResponse(req, poems, null, "random");
+    }
+
+    private List<Poem> samplePoemsFromCache(List<String> sources, int count) {
+        List<Poem> pool = sources != null && !sources.isEmpty()
+            ? cachedPoems.stream().filter(p -> sources.contains(p.getSource())).toList()
+            : cachedPoems;
+        if (pool.isEmpty()) return List.of();
+        Set<Integer> indices = new HashSet<>();
+        while (indices.size() < Math.min(count, pool.size())) {
+            indices.add(random.nextInt(pool.size()));
         }
-        return buildResponse(req, poems, null);
+        return indices.stream().map(pool::get).toList();
     }
 
     public GenerateResponse generateByKeyword(GenerateRequest req) {
@@ -80,7 +101,7 @@ public class NameService {
             candidates = poemWordRepository.findByWord(keyword);
         }
         List<Poem> poems = extractPoems(candidates);
-        return buildResponse(req, poems, keyword);
+        return buildResponse(req, poems, keyword, "keyword");
     }
 
     public GenerateResponse generateByTheme(GenerateRequest req) {
@@ -92,7 +113,7 @@ public class NameService {
             candidates = poemWordRepository.findByMeaningTags(themes);
         }
         List<Poem> poems = extractPoems(candidates);
-        return buildResponse(req, poems, null);
+        return buildResponse(req, poems, null, "theme");
     }
 
     private List<Poem> extractPoems(List<PoemWord> words) {
@@ -103,7 +124,7 @@ public class NameService {
         return new ArrayList<>(map.values());
     }
 
-    private GenerateResponse buildResponse(GenerateRequest req, List<Poem> poems, String keyword) {
+    private GenerateResponse buildResponse(GenerateRequest req, List<Poem> poems, String keyword, String mode) {
         if (poems.isEmpty()) {
             return new GenerateResponse(Collections.emptyList());
         }
@@ -157,15 +178,21 @@ public class NameService {
             );
             item.setSourceNote(formatSourceNote(poem));
             names.add(item);
-
-            NameRecord record = new NameRecord();
-            record.setSurname(surname);
-            record.setGivenName(givenName);
-            record.setFullName(fullName);
-            record.setMode("random");
-            nameRecordRepository.save(record);
         }
 
+        if (!names.isEmpty()) {
+            List<NameRecord> records = names.stream()
+                .map(n -> {
+                    NameRecord r = new NameRecord();
+                    r.setSurname(n.surname());
+                    r.setGivenName(n.givenName());
+                    r.setFullName(n.fullName());
+                    r.setMode(mode);
+                    return r;
+                })
+                .toList();
+            nameRecordRepository.saveAll(records);
+        }
         return new GenerateResponse(names);
     }
 

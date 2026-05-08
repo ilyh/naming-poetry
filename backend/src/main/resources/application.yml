@@ -1,7 +1,5 @@
 server:
   port: 8080
-  servlet:
-    context-path: /
 
 spring:
   datasource:
@@ -16,11 +14,6 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQLDialect
-  http:
-    encoding:
-      charset: UTF-8
-      enabled: true
-      force: true
 
 # 加载黑名单配置
 spring:

@@ -17,13 +17,9 @@ public class BlacklistController {
     @GetMapping("/blacklist")
     public Map<String, Object> getBlacklist() {
         Set<Character> chars = blacklistConfig.getBadChars();
-        List<String> charList = new ArrayList<>();
-        for (Character c : chars) {
-            charList.add(String.valueOf(c));
-        }
         return Map.of(
             "blacklistSize", chars.size(),
-            "characters", charList
+            "characters", chars.toString()
         );
     }
 
@@ -35,22 +31,5 @@ public class BlacklistController {
         } catch (Exception e) {
             return Map.of("status", "error", "message", "重新加载失败: " + e.getMessage());
         }
-    }
-
-    @GetMapping("/blacklist/test")
-    public Map<String, Object> testBlacklist() {
-        Set<Character> chars = blacklistConfig.getBadChars();
-        List<Map<String, Object>> charDetails = new ArrayList<>();
-        for (Character c : chars) {
-            charDetails.add(Map.of(
-                "char", String.valueOf(c),
-                "code", (int) c,
-                "hex", "0x" + Integer.toHexString(c)
-            ));
-        }
-        return Map.of(
-            "totalChars", chars.size(),
-            "sample", charDetails.subList(0, Math.min(10, charDetails.size()))
-        );
     }
 }

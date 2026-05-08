@@ -50,7 +50,8 @@ public class NameService {
         '秽','妹','狐','鸡','鸭','蝇','悔','鱼','肉','苦','犬','吠','窥','血','丧','饥',
         '女','搔','父','母','昏','狗','蟊','疾','病','痛','死','潦','哀','痒','害','蛇',
         '牲','妇','狸','鹅','穴','畜','烂','兽','靡','爪','氓','劫','鬣','螽','毛','婚',
-        '姻','匪','婆','羞','辱'
+        '姻','匪','婆','羞','辱','蝱','悸','薨','谑','麕','怒','浇','憔','怕','呆','鞋',
+        '孕','尸','駉','谮','罴','娈'
     ));
 
     public NameService(PoemRepository poemRepository, PoemWordRepository poemWordRepository, NameRecordRepository nameRecordRepository) {

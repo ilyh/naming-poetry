@@ -8,6 +8,8 @@ import com.example.naming.entity.PoemWord;
 import com.example.naming.repository.NameRecordRepository;
 import com.example.naming.repository.PoemRepository;
 import com.example.naming.repository.PoemWordRepository;
+import com.example.naming.config.BlacklistConfig;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -20,6 +22,7 @@ public class NameService {
     private final PoemRepository poemRepository;
     private final PoemWordRepository poemWordRepository;
     private final NameRecordRepository nameRecordRepository;
+    private final BlacklistConfig blacklistConfig;
     private final Random random = new Random();
 
     private static final int RANDOM_POEM_SAMPLE = 300;
@@ -37,32 +40,14 @@ public class NameService {
         "cifu", "著名辞赋"
     );
 
-    private static final Set<Character> BAD_CHARS = new HashSet<>(Arrays.asList(
-        '不','丧','乱','亏','亵','仃','优','伶','佞','俘','倡','偷','冢','凄','凋','凶',
-        '刑','勿','半','单','卜','叛','只','吊','否','咽','哀','哽','囚','坟','垒','堠',
-        '墓','墙','夭','奠','奸','妒','妓','妖','妾','媚','媟','嫉','孑','孤','寂','寇',
-        '寞','寥','巫','废','弗','徂','怅','怨','恨','恫','恸','悲','悼','惘','惨','愁',
-        '戍','戎','戚','戮','放','无','晏','暴','更','未','朽','枭','枯','柝','桧','棘',
-        '欠','殂','殃','殇','残','殒','殓','殡','毋','氓','汩','泣','泪','淫','溘','漏',
-        '灭','灰','灾','烬','烽','燧','狂','狄','狡','独','狼','玄','疚','疠','疢','痌',
-        '痗','痛','瘁','瘥','瘴','砧','碑','碣','祀','祭','祸','祼','禘','稗','窃','窜',
-        '筮','素','缟','缺','羌','芜','苦','茨','荆','莠','莫','落','蒿','虱','蚊','蚓',
-        '蚤','蛆','蜮','蝇','蝎','螂','蟆','觋','谄','谗','谪','豺','败','贬','贼','赭',
-        '蹇','辕','迁','逐','逝','邅','非','驿','魅','魉','魍','魑','鸱','鹑','黔','老',
-        '胸','鬼','懒','禽','鸟','鸡','我','邪','罪','凶','丑','仇','鼠','蟋','蟀','淫',
-        '秽','妹','狐','鸡','鸭','蝇','悔','鱼','肉','苦','犬','吠','窥','血','丧','饥',
-        '女','搔','父','母','昏','狗','蟊','疾','病','痛','死','潦','哀','痒','害','蛇',
-        '牲','妇','狸','鹅','穴','畜','烂','兽','靡','爪','氓','劫','鬣','螽','毛','婚',
-        '姻','匪','婆','羞','辱','蝱','悸','薨','谑','麕','怒','浇','憔','怕','呆','鞋',
-        '孕','尸','駉','谮','罴','娈'
-    ));
-
-    public NameService(PoemRepository poemRepository, PoemWordRepository poemWordRepository, NameRecordRepository nameRecordRepository) {
+    
+    public NameService(PoemRepository poemRepository, PoemWordRepository poemWordRepository, NameRecordRepository nameRecordRepository, BlacklistConfig blacklistConfig) {
         this.poemRepository = poemRepository;
         this.poemWordRepository = poemWordRepository;
         this.nameRecordRepository = nameRecordRepository;
         this.allPoemIds = new ArrayList<>();
         this.cachedPoems = new ArrayList<>();
+        this.blacklistConfig = blacklistConfig;
         loadPoemsToCache();
     }
 
@@ -225,7 +210,7 @@ public class NameService {
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < str.length(); i++) {
             char c = str.charAt(i);
-            if (!BAD_CHARS.contains(c) && c >= 0x4E00 && c <= 0x9FFF) {
+            if (!blacklistConfig.contains(c) && c >= 0x4E00 && c <= 0x9FFF) {
                 sb.append(c);
             }
         }

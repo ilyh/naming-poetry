@@ -14,3 +14,8 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQLDialect
+
+# 加载黑名单配置
+spring:
+  profiles:
+    include: blacklist

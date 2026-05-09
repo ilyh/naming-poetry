@@ -1,27 +1,24 @@
 package com.example.naming.config;
 
+import jakarta.annotation.PostConstruct;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.Resource;
+import org.springframework.util.CollectionUtils;
 
-import javax.annotation.PostConstruct;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.*;
 
 @Configuration
 @ConfigurationProperties(prefix = "bad")
 public class BlacklistConfig {
 
-    private String chars;
+    private List<String> chars;
 
     private Set<Character> badChars = new HashSet<>();
 
     @PostConstruct
     public void init() {
-        if (chars != null && !chars.trim().isEmpty()) {
-            for (String c : chars.split(",")) {
+        if (!CollectionUtils.isEmpty(chars)) {
+            for (String c : chars) {
                 if (!c.trim().isEmpty()) {
                     badChars.add(c.trim().charAt(0));
                 }
@@ -33,7 +30,11 @@ public class BlacklistConfig {
         return Collections.unmodifiableSet(badChars);
     }
 
-    public void setChars(String chars) {
+    public List<String> getChars() {
+        return chars;
+    }
+
+    public void setChars(List<String> chars) {
         this.chars = chars;
         // 重新加载
         badChars.clear();

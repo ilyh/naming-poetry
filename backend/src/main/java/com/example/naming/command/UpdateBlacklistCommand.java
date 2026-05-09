@@ -1,6 +1,7 @@
 package com.example.naming.command;
 
 import com.example.naming.config.BlacklistConfig;
+import java.util.Arrays;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -20,7 +21,7 @@ public class UpdateBlacklistCommand implements CommandLineRunner {
             System.out.println("当前黑名单字符数量: " + blacklistConfig.getBadChars().size());
             System.out.print("请输入新的黑名单字符（用逗号分隔）: ");
             String input = scanner.nextLine();
-            blacklistConfig.setChars(input);
+            blacklistConfig.setChars(Arrays.asList(input.split(",")));
             System.out.println("黑名单已更新！");
             System.out.println("新的黑名单字符数量: " + blacklistConfig.getBadChars().size());
             scanner.close();

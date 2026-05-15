@@ -1,5 +1,6 @@
 package com.example.naming.repository;
 
+import com.example.naming.dto.PoemCacheItem;
 import com.example.naming.entity.Poem;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -16,6 +17,9 @@ public interface PoemRepository extends JpaRepository<Poem, Long> {
 
     @Query("SELECT CONCAT(p.title, '|', p.author, '|', p.source) FROM Poem p")
     Set<String> findAllKeys();
+
+    @Query("SELECT new com.example.naming.dto.PoemCacheItem(p.id, p.title, p.author, p.source) FROM Poem p")
+    List<PoemCacheItem> findAllCacheItems();
 
     List<Poem> findAllByIdIn(List<Long> ids);
 

@@ -2,6 +2,7 @@ package com.example.naming.service;
 
 import com.example.naming.dto.GenerateRequest;
 import com.example.naming.dto.GenerateResponse;
+import com.example.naming.dto.PoemCacheItem;
 import com.example.naming.entity.NameRecord;
 import com.example.naming.entity.Poem;
 import com.example.naming.entity.PoemWord;
@@ -9,7 +10,6 @@ import com.example.naming.repository.NameRecordRepository;
 import com.example.naming.repository.PoemRepository;
 import com.example.naming.repository.PoemWordRepository;
 import com.example.naming.config.BlacklistConfig;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -27,8 +27,7 @@ public class NameService {
 
     private static final int RANDOM_POEM_SAMPLE = 300;
 
-    private final List<Poem> cachedPoems;
-    private final List<Long> allPoemIds;
+    private final List<PoemCacheItem> cachedPoems;
 
     private static final Map<String, String> SOURCE_NAMES = Map.of(
         "shijing", "诗经",
@@ -45,29 +44,29 @@ public class NameService {
         this.poemRepository = poemRepository;
         this.poemWordRepository = poemWordRepository;
         this.nameRecordRepository = nameRecordRepository;
-        this.allPoemIds = new ArrayList<>();
         this.cachedPoems = new ArrayList<>();
         this.blacklistConfig = blacklistConfig;
         loadPoemsToCache();
     }
 
     private void loadPoemsToCache() {
-        List<Poem> all = poemRepository.findAll();
-        this.cachedPoems.addAll(all);
-        for (Poem p : all) {
-            this.allPoemIds.add(p.getId());
-        }
+        this.cachedPoems.addAll(poemRepository.findAllCacheItems());
     }
 
     public GenerateResponse generateRandom(GenerateRequest req) {
         List<String> sources = req.getSources();
-        List<Poem> poems = samplePoemsFromCache(sources, RANDOM_POEM_SAMPLE);
+        List<PoemCacheItem> cacheItems = samplePoemsFromCache(sources, RANDOM_POEM_SAMPLE);
+        if (cacheItems.isEmpty()) {
+            return new GenerateResponse(Collections.emptyList());
+        }
+        List<Long> ids = cacheItems.stream().map(PoemCacheItem::id).toList();
+        List<Poem> poems = poemRepository.findAllByIdIn(ids);
         return buildResponse(req, poems, null, "random");
     }
 
-    private List<Poem> samplePoemsFromCache(List<String> sources, int count) {
-        List<Poem> pool = sources != null && !sources.isEmpty()
-            ? cachedPoems.stream().filter(p -> sources.contains(p.getSource())).toList()
+    private List<PoemCacheItem> samplePoemsFromCache(List<String> sources, int count) {
+        List<PoemCacheItem> pool = sources != null && !sources.isEmpty()
+            ? cachedPoems.stream().filter(p -> sources.contains(p.source())).toList()
             : cachedPoems;
         if (pool.isEmpty()) return List.of();
         Set<Integer> indices = new HashSet<>();

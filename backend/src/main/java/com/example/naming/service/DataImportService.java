@@ -6,7 +6,6 @@ import com.example.naming.repository.PoemRepository;
 import com.example.naming.repository.PoemWordRepository;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.annotation.PostConstruct;
 import org.springframework.stereotype.Service;
 
 import java.io.InputStream;
@@ -34,11 +33,6 @@ public class DataImportService {
     public DataImportService(PoemRepository poemRepository, PoemWordRepository poemWordRepository) {
         this.poemRepository = poemRepository;
         this.poemWordRepository = poemWordRepository;
-    }
-
-    @PostConstruct
-    public void importOnStartup() {
-        importFromResource("data/sample_poems.json");
     }
 
     public String importData() {

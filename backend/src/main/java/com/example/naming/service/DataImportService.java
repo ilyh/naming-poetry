@@ -7,6 +7,7 @@ import com.example.naming.repository.PoemWordRepository;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.InputStream;
 import java.util.*;
@@ -39,68 +40,76 @@ public class DataImportService {
         return importFromResource("data/sample_poems.json");
     }
 
+    @Transactional
     private String importFromResource(String resourcePath) {
         try {
             InputStream is = getClass().getClassLoader().getResourceAsStream(resourcePath);
             if (is == null) { return "No " + resourcePath + " found, skipping import"; }
             JsonNode root = objectMapper.readTree(is);
 
-            // 一次性加载全部已有诗词键到内存，避免逐条查询
             Set<String> existingKeys = poemRepository.findAllKeys();
             System.out.println("Existing poems in DB: " + existingKeys.size());
 
             int imported = 0, skipped = 0;
+            List<PoemWord> wordBatch = new ArrayList<>(500);
+
             for (JsonNode node : root) {
-                if (importPoem(node, existingKeys)) imported++;
-                else skipped++;
+                String title = node.has("title") ? node.get("title").asText() : "无题";
+                String author = node.has("author") ? node.get("author").asText() : "佚名";
+                String source = node.has("source") ? node.get("source").asText() : "tang";
+                String key = title + "|" + author + "|" + source;
+
+                if (existingKeys.contains(key)) {
+                    skipped++;
+                    continue;
+                }
+
+                Poem poem = new Poem();
+                poem.setTitle(title);
+                poem.setAuthor(author);
+                poem.setSource(source);
+                poem.setDynasty(node.has("dynasty") ? node.get("dynasty").asText() : "");
+                String content = node.has("content") ? node.get("content").asText() : "";
+                poem.setContent(content);
+                poem = poemRepository.save(poem);
+                existingKeys.add(key);
+
+                String cleanContent = content.replaceAll("[，。！？；：、\"'（）《》\\[\\]\\s]", "");
+                for (int i = 0; i < cleanContent.length(); i++) {
+                    char c = cleanContent.charAt(i);
+                    if (c < 0x4E00 || c > 0x9FFF) continue;
+
+                    PoemWord pw = new PoemWord();
+                    pw.setPoem(poem);
+                    pw.setWord(String.valueOf(c));
+                    pw.setPosition(i);
+
+                    int start = Math.max(0, i - 5);
+                    int end = Math.min(cleanContent.length(), i + 6);
+                    pw.setContext(cleanContent.substring(start, end));
+
+                    if (i > 0) pw.setPrevWord(String.valueOf(cleanContent.charAt(i - 1)));
+                    if (i < cleanContent.length() - 1) pw.setNextWord(String.valueOf(cleanContent.charAt(i + 1)));
+
+                    pw.setMeaningTag(assignTags(String.valueOf(c)));
+                    wordBatch.add(pw);
+
+                    if (wordBatch.size() >= 500) {
+                        poemWordRepository.saveAll(wordBatch);
+                        wordBatch.clear();
+                    }
+                }
+                imported++;
             }
+
+            if (!wordBatch.isEmpty()) {
+                poemWordRepository.saveAll(wordBatch);
+            }
+
             return "Import done: " + imported + " new poems, " + skipped + " skipped (already exist)";
         } catch (Exception e) {
             return "Data import failed: " + e.getMessage();
         }
-    }
-
-    private boolean importPoem(JsonNode node, Set<String> existingKeys) {
-        String title = node.has("title") ? node.get("title").asText() : "无题";
-        String author = node.has("author") ? node.get("author").asText() : "佚名";
-        String source = node.has("source") ? node.get("source").asText() : "tang";
-
-        String key = title + "|" + author + "|" + source;
-        if (existingKeys.contains(key)) {
-            return false;
-        }
-
-        Poem poem = new Poem();
-        poem.setTitle(title);
-        poem.setAuthor(author);
-        poem.setSource(source);
-        poem.setDynasty(node.has("dynasty") ? node.get("dynasty").asText() : "");
-        String content = node.has("content") ? node.get("content").asText() : "";
-        poem.setContent(content);
-        poem = poemRepository.save(poem);
-        existingKeys.add(key);
-
-        String cleanContent = content.replaceAll("[，。！？；：、\"'（）《》\\[\\]\\s]", "");
-        for (int i = 0; i < cleanContent.length(); i++) {
-            char c = cleanContent.charAt(i);
-            if (c < 0x4E00 || c > 0x9FFF) continue;
-
-            PoemWord pw = new PoemWord();
-            pw.setPoem(poem);
-            pw.setWord(String.valueOf(c));
-            pw.setPosition(i);
-
-            int start = Math.max(0, i - 5);
-            int end = Math.min(cleanContent.length(), i + 6);
-            pw.setContext(cleanContent.substring(start, end));
-
-            if (i > 0) pw.setPrevWord(String.valueOf(cleanContent.charAt(i - 1)));
-            if (i < cleanContent.length() - 1) pw.setNextWord(String.valueOf(cleanContent.charAt(i + 1)));
-
-            pw.setMeaningTag(assignTags(String.valueOf(c)));
-            poemWordRepository.save(pw);
-        }
-        return true;
     }
 
     private String assignTags(String word) {

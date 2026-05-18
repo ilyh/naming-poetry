@@ -138,20 +138,27 @@ public class NameService {
 
             String sentence = pool.get(random.nextInt(pool.size()));
             String clean = cleanBadChars(cleanPunctuation(sentence));
-            if (clean.length() < 2) continue;
+            int targetLen = req.getLength() != null ? req.getLength() : 2;
+            if (clean.length() < targetLen) continue;
 
-            int pos1 = random.nextInt(clean.length());
-            int pos2 = random.nextInt(clean.length());
-            int guard = 0;
-            while (pos2 == pos1 && guard < 50) {
-                pos2 = random.nextInt(clean.length());
-                guard++;
+            String givenName;
+            if (targetLen == 1) {
+                int pos = random.nextInt(clean.length());
+                givenName = String.valueOf(clean.charAt(pos));
+            } else {
+                int pos1 = random.nextInt(clean.length());
+                int pos2 = random.nextInt(clean.length());
+                int guard = 0;
+                while (pos2 == pos1 && guard < 50) {
+                    pos2 = random.nextInt(clean.length());
+                    guard++;
+                }
+                if (pos1 == pos2) continue;
+
+                if (pos1 > pos2) { int tmp = pos1; pos1 = pos2; pos2 = tmp; }
+
+                givenName = String.valueOf(clean.charAt(pos1)) + clean.charAt(pos2);
             }
-            if (pos1 == pos2) continue;
-
-            if (pos1 > pos2) { int tmp = pos1; pos1 = pos2; pos2 = tmp; }
-
-            String givenName = String.valueOf(clean.charAt(pos1)) + clean.charAt(pos2);
             String surname = req.getSurname() != null ? req.getSurname() : "";
             String fullName = surname + givenName;
 

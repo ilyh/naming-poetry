@@ -7,7 +7,6 @@ import com.example.naming.repository.PoemWordRepository;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -37,7 +36,6 @@ public class DataImportService {
         this.poemWordRepository = poemWordRepository;
     }
 
-    @Transactional
     public String importData() {
         return importFromResource("data/sample_poems.json");
     }

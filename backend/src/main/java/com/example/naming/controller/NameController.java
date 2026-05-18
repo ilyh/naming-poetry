@@ -62,7 +62,7 @@ public class NameController {
         try {
             return ResponseEntity.ok(dataImportService.importData());
         } catch (Exception e) {
-            return ResponseEntity.ok("Data import failed: " + e.getMessage());
+            return ResponseEntity.internalServerError().body("Data import failed: " + e.getMessage());
         }
     }
 

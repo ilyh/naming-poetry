@@ -50,7 +50,7 @@ public class DataImportService {
         System.out.println("Existing poems in DB: " + existingKeys.size());
 
         int imported = 0, skipped = 0;
-        List<PoemWord> wordBatch = new ArrayList<>(500);
+        List<PoemWord> wordBatch = new ArrayList<>(100);
 
         for (JsonNode node : root) {
             String title = node.has("title") ? node.get("title").asText() : "无题";
@@ -93,13 +93,16 @@ public class DataImportService {
                 pw.setMeaningTag(assignTags(String.valueOf(c)));
                 wordBatch.add(pw);
 
-                if (wordBatch.size() >= 500) {
+                if (wordBatch.size() >= 100) {
                     poemWordRepository.saveAll(wordBatch);
                     wordBatch.clear();
-                    try { Thread.sleep(50); } catch (InterruptedException e) { Thread.currentThread().interrupt(); }
+                    try { Thread.sleep(200); } catch (InterruptedException e) { Thread.currentThread().interrupt(); break; }
                 }
             }
             imported++;
+            if (imported % 1000 == 0) {
+                System.out.println("Progress: " + imported + " poems imported...");
+            }
         }
 
         if (!wordBatch.isEmpty()) {

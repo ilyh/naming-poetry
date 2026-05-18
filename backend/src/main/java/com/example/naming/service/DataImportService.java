@@ -96,6 +96,7 @@ public class DataImportService {
                 if (wordBatch.size() >= 500) {
                     poemWordRepository.saveAll(wordBatch);
                     wordBatch.clear();
+                    try { Thread.sleep(50); } catch (InterruptedException e) { Thread.currentThread().interrupt(); }
                 }
             }
             imported++;

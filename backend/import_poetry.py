@@ -9,6 +9,14 @@ Usage:
 
 import json, sys, os, glob
 
+try:
+    import zhconv
+    def to_simplified(text):
+        return zhconv.convert(text, 'zh-cn')
+except ImportError:
+    def to_simplified(text):
+        return text
+
 CHINESE_POETRY_REPO = sys.argv[1] if len(sys.argv) > 1 else "/tmp/chinese-poetry"
 
 # Famous poets by dynasty
@@ -166,6 +174,8 @@ if os.path.isdir(wudai_dir):
         for jf in glob.glob(os.path.join(subpath, '*.json')):
             data = load_json(jf)
             for item in data:
+                if not isinstance(item, dict):
+                    continue
                 author = item.get('author', '')
                 paragraphs = item.get('paragraphs', [])
                 content = ''.join(paragraphs)
@@ -454,6 +464,12 @@ print(f"古诗: {len(GUSHI_POEMS)} added, total {len(poems)}", file=sys.stderr)
 
 print(f"Total poems: {len(poems)}", file=sys.stderr)
 
+# Convert to simplified Chinese
+for p in poems:
+    for field in ('title', 'author', 'dynasty', 'content'):
+        if field in p:
+            p[field] = to_simplified(p[field])
+
 # Deduplicate by content (keep first occurrence)
 seen = set()
 unique = []
@@ -471,7 +487,7 @@ source_counts = Counter(p['source'] for p in unique)
 print("Source distribution:", dict(source_counts), file=sys.stderr)
 
 # Cap per source to keep output manageable for frontend loading
-SOURCE_LIMITS = {'shijing': 100, 'tang': 200, 'song': 200, 'chuci': 50, 'yuefu': 50, 'gushi': 50, 'cifu': 30}
+SOURCE_LIMITS = {'shijing': 100, 'tang': 10000, 'song': 200, 'chuci': 50, 'yuefu': 50, 'gushi': 50, 'cifu': 30}
 limited = []
 source_totals = Counter()
 for p in unique:

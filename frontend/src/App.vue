@@ -46,6 +46,10 @@
     </main>
 
     <HistoryDrawer v-if="showHistory" @close="showHistory = false" />
+
+    <footer class="text-center py-6 text-xs text-warm-gray/50">
+      <a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener noreferrer" class="hover:text-warm-gray/70 transition-colors">鲁ICP备2026025186号</a>
+    </footer>
   </div>
 </template>
 

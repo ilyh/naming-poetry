@@ -59,7 +59,11 @@ public class NameController {
 
     @PostMapping("/admin/import")
     public ResponseEntity<String> importPoems() {
-        return ResponseEntity.ok(dataImportService.importData());
+        try {
+            return ResponseEntity.ok(dataImportService.importData());
+        } catch (Exception e) {
+            return ResponseEntity.ok("Data import failed: " + e.getMessage());
+        }
     }
 
     @GetMapping("/stats")

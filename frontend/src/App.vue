@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-screen" style="background: radial-gradient(circle at top left, rgba(47,127,115,0.10), transparent 36%), radial-gradient(circle at right 18%, rgba(176,106,60,0.10), transparent 28%), linear-gradient(180deg, #f9f4eb 0%, #f6efe3 52%, #efe4d3 100%)">
+  <div class="min-h-screen bg-paper">
     <NavBar @toggle-history="showHistory = !showHistory" />
     <router-view />
     <HistoryDrawer v-if="showHistory" @close="showHistory = false" />

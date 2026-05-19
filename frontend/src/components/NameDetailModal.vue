@@ -5,7 +5,7 @@
         {{ name.surname }}<span class="text-teal-warm">{{ name.givenName }}</span>
       </h3>
 
-      <div class="rounded-xl p-4 mb-4" style="background:linear-gradient(180deg, rgba(47,127,115,0.06), rgba(255,253,248,0.8)); border:1px solid rgba(47,127,115,0.14)">
+      <div class="rounded-xl p-4 mb-4" style="background:#F8F6F2; border:1px solid rgba(0,0,0,0.05)">
         <p class="text-sm text-warm-gray leading-lax mb-1 font-medium">出处诗句</p>
         <p class="text-base text-warm-brown leading-relaxed" v-html="highlightedSentence"></p>
         <p v-if="name.sourceNote" class="text-xs text-warm-gray mt-2 pt-2 border-t border-stone-300/30">出处：{{ name.sourceNote }}</p>
@@ -16,7 +16,7 @@
           v-for="(char, idx) in name.givenName.split('')"
           :key="idx"
           class="w-12 h-12 rounded-full flex items-center justify-center text-xl font-serif-name font-bold"
-          style="background:rgba(47,127,115,0.12); color:#1f5e55"
+          style="background:#EEF5F4; color:#11554F"
         >{{ char }}</span>
       </div>
 

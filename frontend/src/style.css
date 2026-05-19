@@ -1,43 +1,41 @@
 @import "tailwindcss";
 
 @theme {
-  --color-cream: #f9f4eb;
-  --color-cream-dark: #efe4d3;
-  --color-warm-brown: #2f261f;
-  --color-warm-gray: #65594c;
-  --color-teal-warm: #1f5e55;
-  --color-teal-light: #2f7f73;
-  --color-amber-warm: #b06a3c;
+  --color-paper: #FAF8F5;
+  --color-cream: #FAF8F5;
+  --color-cream-dark: #F3F0EB;
+  --color-warm-brown: #1A1A1A;
+  --color-warm-gray: #5C5C5C;
+  --color-teal-warm: #11554F;
+  --color-teal-light: #1A7A72;
+  --color-amber-warm: #5C5C5C;
 }
 
-/* Serif font stack for names */
 .font-serif-name {
   font-family: "Source Han Serif SC", "Noto Serif SC", "Songti SC", "SimSun", serif;
 }
 
-/* Glass card effect */
-.glass-card {
-  background: rgba(251, 247, 241, 0.84);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  border: 1px solid rgba(89, 72, 56, 0.16);
-  box-shadow: 0 24px 42px -36px rgba(70, 54, 36, 0.55);
+/* Paper card — replaces glass-card. Clean, crisp, barely-there shadow. */
+.glass-card,
+.paper-card {
+  background: #FFFFFF;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02), 0 4px 16px rgba(0, 0, 0, 0.03);
 }
 
-/* Card entrance animation */
+/* Card entrance — slightly slower, gentler rise */
 @keyframes card-rise {
-  from { opacity: 0; transform: translateY(14px); }
+  from { opacity: 0; transform: translateY(6px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
 .card-enter {
-  animation: card-rise 360ms ease both;
+  animation: card-rise 420ms ease both;
 }
 
-/* Name char highlight in sentence */
+/* Name character highlight in sentence — clean, no gradient underline */
 .sentence-highlight {
-  color: #1f5e55;
-  font-weight: 700;
-  background: linear-gradient(180deg, transparent 45%, rgba(47, 127, 115, 0.18) 45%);
+  color: #11554F;
+  font-weight: 600;
   font-style: normal;
 }

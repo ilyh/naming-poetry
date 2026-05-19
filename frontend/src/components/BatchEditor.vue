@@ -4,7 +4,7 @@
     <textarea
       v-model="localChars"
       class="w-full h-40 p-3 rounded-lg border text-sm text-warm-brown font-mono resize-y focus:outline-none focus:ring-1 focus:ring-teal-warm/30"
-      style="background:rgba(255,255,255,0.6); border-color:rgba(89,72,56,0.16)"
+      style="background:#FAF8F5; border-color:#EBE8E3"
       placeholder="输入黑名单字符，用逗号分隔"
     ></textarea>
     <div class="flex items-center justify-between mt-3">

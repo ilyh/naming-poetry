@@ -18,7 +18,7 @@
     </div>
     <Teleport to="body">
       <transition name="toast">
-        <div v-if="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 px-4 py-2 rounded-lg text-sm font-bold text-white shadow-lg z-50" style="background:rgba(47,38,31,0.9)">
+        <div v-if="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 px-4 py-2 rounded-lg text-sm font-bold text-white shadow-lg z-50" style="background:#1A1A1A">
           {{ toast }}
         </div>
       </transition>

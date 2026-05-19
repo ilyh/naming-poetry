@@ -7,7 +7,7 @@
         type="text"
         placeholder="搜索字符..."
         class="flex-1 px-3 py-2 rounded-lg border text-sm text-warm-brown focus:outline-none focus:ring-1 focus:ring-teal-warm/30"
-        style="background:rgba(255,255,255,0.6); border-color:rgba(89,72,56,0.16)"
+        style="background:#FAF8F5; border-color:#EBE8E3"
       />
       <input
         v-model="addCharInput"
@@ -15,7 +15,7 @@
         maxlength="1"
         placeholder="添加"
         class="w-16 px-3 py-2 rounded-lg border text-sm text-warm-brown focus:outline-none focus:ring-1 focus:ring-teal-warm/30"
-        style="background:rgba(255,255,255,0.6); border-color:rgba(89,72,56,0.16)"
+        style="background:#FAF8F5; border-color:#EBE8E3"
         @keyup.enter="handleAdd"
       />
       <button
@@ -73,13 +73,13 @@ function handleAdd() {
 
 <style scoped>
 .char-tag {
-  background: rgba(251, 247, 241, 0.84);
-  border: 1px solid rgba(89, 72, 56, 0.16);
-  color: #2f261f;
+  background: #FAF8F5;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  color: #1A1A1A;
 }
 .char-tag:hover {
-  background: #fee2e2;
-  border-color: #fca5a5;
-  color: #991b1b;
+  background: #FEE2E2;
+  border-color: #FECACA;
+  color: #991B1B;
 }
 </style>

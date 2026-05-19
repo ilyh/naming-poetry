@@ -11,7 +11,7 @@
           ? 'text-white'
           : 'text-warm-gray border border-stone-300/40 bg-cream/80 hover:-translate-y-0.5'
       ]"
-      :style="modelValue === n ? { background:'linear-gradient(135deg,#1f5e55,#2f7f73)' } : {}"
+      :style="modelValue === n ? { background: '#11554F' } : {}"
     >{{ n }}字</button>
   </div>
 </template>

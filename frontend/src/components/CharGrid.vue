@@ -9,21 +9,28 @@
         class="flex-1 px-3 py-2 rounded-lg border text-sm text-warm-brown focus:outline-none focus:ring-1 focus:ring-teal-warm/30"
         style="background:#FAF8F5; border-color:#EBE8E3"
       />
-      <input
-        v-model="addCharInput"
-        type="text"
-        maxlength="1"
-        placeholder="添加"
-        class="w-16 px-3 py-2 rounded-lg border text-sm text-warm-brown focus:outline-none focus:ring-1 focus:ring-teal-warm/30"
-        style="background:#FAF8F5; border-color:#EBE8E3"
-        @keyup.enter="handleAdd"
-      />
+      <template v-if="showAdd">
+        <input
+          ref="addRef"
+          v-model="addChar"
+          type="text"
+          maxlength="1"
+          placeholder="字"
+          class="w-12 px-2 py-2 rounded-lg border text-sm text-center text-warm-brown focus:outline-none focus:ring-1 focus:ring-teal-warm/30"
+          style="background:#FAF8F5; border-color:#EBE8E3"
+          @keyup.enter="confirmAdd"
+          @keyup.escape="cancelAdd"
+        />
+        <button
+          @click="confirmAdd"
+          class="px-3 py-2 rounded-lg text-sm font-bold bg-teal-warm text-white hover:bg-teal-light transition"
+        >&#10003;</button>
+      </template>
       <button
-        @click="handleAdd"
-        class="px-3 py-2 rounded-lg text-sm font-bold bg-teal-warm text-white hover:bg-teal-light transition"
-      >
-        添加
-      </button>
+        v-else
+        @click="openAdd"
+        class="px-3 py-2 rounded-lg text-sm font-medium text-warm-gray hover:text-warm-brown hover:bg-stone-300/20 transition"
+      >+ 添加</button>
     </div>
     <div class="flex flex-wrap gap-2 max-h-72 overflow-y-auto p-1">
       <button
@@ -42,7 +49,7 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, nextTick } from 'vue'
 
 const props = defineProps({
   chars: { type: String, default: '' },
@@ -51,7 +58,9 @@ const props = defineProps({
 const emit = defineEmits(['remove', 'add'])
 
 const searchQuery = ref('')
-const addCharInput = ref('')
+const showAdd = ref(false)
+const addChar = ref('')
+const addRef = ref(null)
 
 const charList = computed(() => {
   if (!props.chars) return []
@@ -63,11 +72,25 @@ const filteredChars = computed(() => {
   return charList.value.filter(c => c.includes(searchQuery.value))
 })
 
-function handleAdd() {
-  const c = addCharInput.value.trim()
-  if (!c) return
+function openAdd() {
+  showAdd.value = true
+  nextTick(() => addRef.value?.focus())
+}
+
+function confirmAdd() {
+  const c = addChar.value.trim()
+  if (!c) {
+    cancelAdd()
+    return
+  }
   emit('add', c)
-  addCharInput.value = ''
+  addChar.value = ''
+  showAdd.value = false
+}
+
+function cancelAdd() {
+  addChar.value = ''
+  showAdd.value = false
 }
 </script>
 

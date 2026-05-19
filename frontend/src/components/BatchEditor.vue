@@ -1,5 +1,5 @@
 <template>
-  <div class="glass-card rounded-2xl p-5">
+  <div class="paper-card rounded-2xl p-6">
     <h3 class="font-serif-name text-lg text-warm-brown mb-3">批量编辑</h3>
     <textarea
       v-model="localChars"

@@ -1,8 +1,8 @@
 <template>
-  <main class="max-w-5xl mx-auto px-4 py-6">
-    <div class="grid grid-cols-1 lg:grid-cols-[18rem_1fr] gap-5">
+  <main class="max-w-6xl mx-auto px-6 py-8">
+    <div class="grid grid-cols-1 lg:grid-cols-[20rem_1fr] gap-6">
       <AdminSidebar />
-      <div class="space-y-5">
+      <div class="space-y-6">
         <BatchEditor
           :chars="chars"
           :char-count="charSet.size"

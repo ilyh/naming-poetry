@@ -1,5 +1,5 @@
 <template>
-  <div class="glass-card rounded-2xl p-5 card-enter flex flex-col" :style="{ animationDelay: (index || 0) * 55 + 'ms' }">
+  <div class="paper-card rounded-2xl p-5 card-enter flex flex-col" :style="{ animationDelay: (index || 0) * 55 + 'ms' }">
     <div class="flex items-start justify-between gap-3 mb-2">
       <div class="min-w-0">
         <p class="text-xs font-bold text-amber-warm tracking-widest mb-1">候选 {{ String(index + 1).padStart(2, '0') }}</p>

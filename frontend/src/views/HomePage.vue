@@ -1,13 +1,12 @@
 <template>
-  <main class="max-w-5xl mx-auto px-4 py-6">
-    <div class="grid grid-cols-1 lg:grid-cols-[18rem_1fr] gap-5">
-      <aside class="glass-card rounded-2xl p-5">
-        <p class="text-xs font-bold text-teal-warm tracking-widest mb-3">STEP 01</p>
-        <h2 class="font-serif-name text-2xl text-warm-brown mb-2">挑选偏好</h2>
-        <p class="text-sm text-warm-gray leading-relaxed mb-4">输入姓氏，选择选字方式和名字长度。</p>
-        <div class="space-y-5">
+  <main class="max-w-6xl mx-auto px-6 py-8">
+    <div class="grid grid-cols-1 lg:grid-cols-[20rem_1fr] gap-6">
+      <aside class="paper-card rounded-2xl p-6">
+        <h2 class="font-serif-name text-xl text-warm-brown mb-1">偏好设置</h2>
+        <p class="text-sm text-warm-gray/60 mb-6">选择典籍、姓氏与名字长度</p>
+        <div class="space-y-6">
           <BookSelector v-model="selectedSources" />
-          <div class="border-t border-stone-300/20 pt-5 space-y-4">
+          <div class="border-t border-stone-300 pt-6 space-y-5">
             <SurnameInput v-model="surname" />
             <LengthSelector v-model="nameLength" />
             <NameTabs v-model="activeTab" />
@@ -15,11 +14,8 @@
         </div>
       </aside>
 
-      <section class="glass-card rounded-2xl p-5 min-h-[34rem]">
-        <div class="mb-4">
-          <p class="text-xs font-bold text-teal-warm tracking-widest mb-1">STEP 02</p>
-          <h2 class="font-serif-name text-2xl text-warm-brown">诗意候选</h2>
-        </div>
+      <section class="paper-card rounded-2xl p-6 min-h-[34rem]">
+        <h2 class="font-serif-name text-xl text-warm-brown mb-6">候选名字</h2>
 
         <RandomPanel
           v-if="activeTab === 'random'"

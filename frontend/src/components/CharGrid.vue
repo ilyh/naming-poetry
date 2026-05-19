@@ -1,5 +1,5 @@
 <template>
-  <div class="glass-card rounded-2xl p-5">
+  <div class="paper-card rounded-2xl p-6">
     <h3 class="font-serif-name text-lg text-warm-brown mb-3">逐字管理</h3>
     <div class="flex gap-2 mb-4">
       <input

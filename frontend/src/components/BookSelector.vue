@@ -1,13 +1,13 @@
 <template>
-  <div class="space-y-1.5">
-    <p class="text-xs font-bold text-teal-warm tracking-widest mb-2">选择典籍</p>
+  <div class="space-y-1">
+    <p class="text-xs font-bold text-teal-warm tracking-widest mb-3">典籍</p>
     <label
       v-for="book in books"
       :key="book.value"
-      class="flex items-start gap-3 p-3 rounded-xl cursor-pointer transition border"
+      class="flex items-start gap-2.5 p-2.5 rounded-lg cursor-pointer transition border"
       :class="selected.includes(book.value)
-        ? 'border-teal-warm/40 bg-teal-warm/5 shadow-sm'
-        : 'border-stone-300/20 bg-cream/80 hover:-translate-y-0.5'"
+        ? 'border-teal-warm/30 bg-teal-warm/[0.04]'
+        : 'border-stone-300 bg-white hover:border-stone-300/60'"
     >
       <input
         type="checkbox"
@@ -17,12 +17,12 @@
         class="mt-0.5 accent-teal-warm"
       />
       <div>
-        <span class="text-sm font-bold text-warm-brown">{{ book.name }}</span>
-        <span class="text-xs text-warm-gray ml-2">{{ book.count }}首</span>
-        <p class="text-xs text-warm-gray/70 mt-0.5">{{ book.description }}</p>
+        <span class="text-sm font-medium text-warm-brown">{{ book.name }}</span>
+        <span class="text-xs text-warm-gray/50 ml-1.5">{{ book.count }}首</span>
+        <p class="text-xs text-warm-gray/50 mt-0.5 leading-snug">{{ book.description }}</p>
       </div>
     </label>
-    <p class="text-xs text-warm-gray/50 mt-1">{{ selected.length === 0 ? '未选择时将使用全部典籍' : '已选 ' + selected.length + ' 部典籍' }}</p>
+    <p class="text-xs text-warm-gray/40 mt-2">{{ selected.length === 0 ? '未选择时使用全部典籍' : '已选 ' + selected.length + ' 部' }}</p>
   </div>
 </template>
 

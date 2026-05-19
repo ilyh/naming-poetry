@@ -21,3 +21,15 @@ export function getHistory(page = 0, size = 20) {
 export function getStats() {
   return api.get('/name/stats')
 }
+
+export function getBlacklist() {
+  return api.get('/admin/blacklist')
+}
+
+export function updateBlacklist(chars) {
+  return api.post('/admin/blacklist', { chars })
+}
+
+export function reloadBlacklist() {
+  return api.post('/admin/blacklist/reload')
+}

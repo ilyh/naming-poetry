@@ -16,6 +16,7 @@ public class GenerateResponse {
         private List<String> sources;
         private List<String> themes;
         private String sourceNote;
+        private Long poemId;
 
         public NameItem(String text, String surname, String givenName, List<String> sources, List<String> themes) {
             this.text = text;
@@ -37,5 +38,7 @@ public class GenerateResponse {
         public void setThemes(List<String> themes) { this.themes = themes; }
         public String getSourceNote() { return sourceNote; }
         public void setSourceNote(String sourceNote) { this.sourceNote = sourceNote; }
+        public Long getPoemId() { return poemId; }
+        public void setPoemId(Long poemId) { this.poemId = poemId; }
     }
 }

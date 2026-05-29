@@ -33,3 +33,7 @@ export function updateBlacklist(chars) {
 export function reloadBlacklist() {
   return api.post('/admin/blacklist/reload')
 }
+
+export function getPoem(id) {
+  return api.get(`/poem/${id}`)
+}

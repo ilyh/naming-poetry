@@ -4,7 +4,7 @@
       <div class="min-w-0">
         <p class="text-xs font-bold text-amber-warm tracking-widest mb-1">候选 {{ String(index + 1).padStart(2, '0') }}</p>
         <h3 class="font-serif-name text-4xl text-warm-brown leading-tight">
-          {{ name.surname }}<span class="text-teal-warm">{{ name.givenName }}</span>
+          {{ name.surname }}<template v-for="(ch, i) in name.givenName" :key="i"><ruby v-if="isChinese(ch)" class="text-teal-warm">{{ ch }}<rp>(</rp><rt class="text-xs text-warm-gray font-sans">{{ getPinyin(ch) }}</rt><rp>)</rp></ruby><span v-else class="text-teal-warm">{{ ch }}</span></template>
         </h3>
       </div>
       <button
@@ -16,13 +16,18 @@
     <p class="text-base text-warm-brown leading-relaxed mt-2" v-html="highlightedSentence"></p>
 
     <div class="mt-auto pt-3 border-t border-stone-300/40 flex justify-between gap-2 text-xs text-warm-gray">
-      <span>出处：{{ name.sourceNote || (name.sources?.[0] || '未知') }}</span>
+      <button v-if="name.poemId" @click="openPoem" class="hover:text-teal-warm transition cursor-pointer underline-offset-2 hover:underline">出处：{{ name.sourceNote || (name.sources?.[0] || '未知') }}</button>
+      <span v-else>出处：{{ name.sourceNote || (name.sources?.[0] || '未知') }}</span>
     </div>
+    <PoemDetailModal v-if="showPoem && poemData" :poem="poemData" @close="showPoem = false" />
   </div>
 </template>
 
 <script setup>
 import { computed, ref } from 'vue'
+import { isChinese, getPinyin } from '../composables/usePinyin'
+import { getPoem } from '../api'
+import PoemDetailModal from './PoemDetailModal.vue'
 
 const props = defineProps({
   name: { type: Object, required: true },
@@ -31,6 +36,16 @@ const props = defineProps({
 const emit = defineEmits(['detail'])
 
 const copied = ref(false)
+const poemData = ref(null)
+const showPoem = ref(false)
+
+async function openPoem() {
+  if (!props.name.poemId) return
+  if (poemData.value) { showPoem.value = true; return }
+  const { data } = await getPoem(props.name.poemId)
+  poemData.value = data
+  showPoem.value = true
+}
 
 const highlightedSentence = computed(() => {
   const sentence = props.name.sources?.[0] || ''

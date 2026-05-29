@@ -168,6 +168,7 @@ public class NameService {
                 fullName, surname, givenName, sources, null
             );
             item.setSourceNote(formatSourceNote(poem));
+            item.setPoemId(poem.getId());
             names.add(item);
         }
 

@@ -1,5 +1,6 @@
 <template>
   <main class="max-w-6xl mx-auto px-6 py-8">
+    <HeroSection />
     <div class="grid grid-cols-1 lg:grid-cols-[20rem_1fr] gap-6">
       <aside class="paper-card rounded-2xl p-6">
         <h2 class="font-serif-name text-xl text-warm-brown mb-1">偏好设置</h2>
@@ -42,6 +43,7 @@
 
 <script setup>
 import { ref } from 'vue'
+import HeroSection from '../components/HeroSection.vue'
 import BookSelector from '../components/BookSelector.vue'
 import SurnameInput from '../components/SurnameInput.vue'
 import LengthSelector from '../components/LengthSelector.vue'

@@ -24,7 +24,7 @@
 </template>
 
 <script setup>
-import { computed, ref } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { isChinese, getPinyin } from '../composables/usePinyin'
 import { getPoem } from '../api'
 import PoemDetailModal from './PoemDetailModal.vue'
@@ -38,6 +38,11 @@ const emit = defineEmits(['detail'])
 const copied = ref(false)
 const poemData = ref(null)
 const showPoem = ref(false)
+
+watch(() => props.name.poemId, () => {
+  poemData.value = null
+  showPoem.value = false
+})
 
 async function openPoem() {
   if (!props.name.poemId) return

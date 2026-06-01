@@ -44,8 +44,7 @@ public class NameController {
 
     @GetMapping("/{id}")
     public ResponseEntity<NameRecord> detail(@PathVariable Long id) {
-        return nameService.getHistory(0, 1).getContent().stream()
-            .findFirst()
+        return nameService.findById(id)
             .map(ResponseEntity::ok)
             .orElse(ResponseEntity.notFound().build());
     }

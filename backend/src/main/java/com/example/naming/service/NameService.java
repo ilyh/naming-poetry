@@ -189,20 +189,25 @@ public class NameService {
     }
 
     private List<String> splitSentences(String content) {
-        String str = content.replaceAll("[\\s　\"'（）《》\\[\\]<>brp/]", "");
-        String[] parts = str.split("[，。！？；：]");
+        // 换行归一化后，直接在原文上按标点切分（不预删字符），确保结果是原文子串
+        String normalized = content.replace('\n', '，');
+        String[] parts = normalized.split("[，。！？；：]");
         List<String> result = new ArrayList<>();
         for (String part : parts) {
-            String clean = cleanBadChars(cleanPunctuation(part));
+            String trimmed = part.trim();
+            if (trimmed.isEmpty()) continue;
+            String clean = cleanBadChars(cleanPunctuation(trimmed));
             if (clean.length() >= 3 && clean.length() <= 14) {
-                result.add(part.trim());
+                result.add(trimmed);
             }
         }
         if (result.isEmpty()) {
             for (String part : parts) {
-                String clean = cleanBadChars(cleanPunctuation(part));
+                String trimmed = part.trim();
+                if (trimmed.isEmpty()) continue;
+                String clean = cleanBadChars(cleanPunctuation(trimmed));
                 if (clean.length() >= 3 && clean.length() <= 18) {
-                    result.add(part.trim());
+                    result.add(trimmed);
                 }
             }
         }

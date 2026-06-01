@@ -8,6 +8,11 @@ const routes = [
     name: 'admin',
     component: () => import('../views/AdminPage.vue'),
   },
+  {
+    path: '/demo/poem',
+    name: 'poem-demo',
+    component: () => import('../views/PoemDemo.vue'),
+  },
 ]
 
 export default createRouter({

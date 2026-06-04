@@ -28,6 +28,9 @@ target/
 .classpath
 .settings/
 
+# MCP
+.mcp.json
+
 # OS
 .DS_Store
 Thumbs.db

@@ -142,7 +142,23 @@ public class NameService {
             if (clean.length() < targetLen) continue;
 
             String givenName;
-            if (targetLen == 1) {
+            if (keyword != null && !keyword.isEmpty()) {
+                int kwIdx = clean.indexOf(keyword);
+                if (kwIdx < 0) continue;
+                if (targetLen == 1) {
+                    givenName = keyword;
+                } else {
+                    int pos1 = kwIdx;
+                    List<Integer> candidates = new ArrayList<>();
+                    for (int i = 0; i < clean.length(); i++) {
+                        if (i != pos1) candidates.add(i);
+                    }
+                    if (candidates.isEmpty()) continue;
+                    int pos2 = candidates.get(random.nextInt(candidates.size()));
+                    if (pos1 > pos2) { int tmp = pos1; pos1 = pos2; pos2 = tmp; }
+                    givenName = String.valueOf(clean.charAt(pos1)) + clean.charAt(pos2);
+                }
+            } else if (targetLen == 1) {
                 int pos = random.nextInt(clean.length());
                 givenName = String.valueOf(clean.charAt(pos));
             } else {

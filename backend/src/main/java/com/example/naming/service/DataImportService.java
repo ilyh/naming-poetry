@@ -116,12 +116,11 @@ public class DataImportService {
     }
 
     private String assignTags(String word) {
-        List<String> matched = new ArrayList<>();
         for (Map.Entry<String, List<String>> entry : TAG_KEYWORDS.entrySet()) {
             if (entry.getValue().contains(word)) {
-                matched.add(entry.getKey());
+                return entry.getKey();
             }
         }
-        return matched.isEmpty() ? null : String.join(",", matched);
+        return null;
     }
 }

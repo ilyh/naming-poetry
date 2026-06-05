@@ -11,13 +11,13 @@ public class NameRecord {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, length = 1)
+    @Column(nullable = false, length = 4)
     private String surname;
 
     @Column(name = "given_name", nullable = false, length = 4)
     private String givenName;
 
-    @Column(name = "full_name", nullable = false, length = 5)
+    @Column(name = "full_name", nullable = false, length = 10)
     private String fullName;
 
     @Column(name = "source1_id")

@@ -2,12 +2,12 @@ package com.example.naming.config;
 
 import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.stereotype.Component;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import java.io.IOException;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.atomic.AtomicInteger;
 
-@Component
 public class RateLimiter implements Filter {
     private static final int MAX_REQUESTS_PER_MINUTE = 30;
     private static final long WINDOW_MS = 60_000;
@@ -38,5 +38,17 @@ public class RateLimiter implements Filter {
     private static class RequestCounter {
         int count = 0;
         long timestamp = System.currentTimeMillis();
+    }
+
+    @Configuration
+    static class RateLimiterConfig {
+        @Bean
+        FilterRegistrationBean<RateLimiter> rateLimiterFilter() {
+            FilterRegistrationBean<RateLimiter> bean = new FilterRegistrationBean<>();
+            bean.setFilter(new RateLimiter());
+            bean.addUrlPatterns("/api/*");
+            bean.setName("rateLimiter");
+            return bean;
+        }
     }
 }

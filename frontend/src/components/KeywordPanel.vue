@@ -1,7 +1,8 @@
 <template>
   <div>
     <div class="flex justify-center gap-3 mb-6">
-      <input v-model="keyword" maxlength="1" placeholder="输入偏好字，如：清"
+      <input :value="keyword" @input="onInput" @compositionstart="composing = true"
+        @compositionend="composing = false" placeholder="输入偏好字，如：清"
         class="w-24 text-center border-b-2 border-teal-warm/30 focus:border-teal-warm outline-none py-1 bg-transparent text-lg text-warm-brown placeholder:text-warm-gray/50" />
       <button @click="generate" :disabled="loading || !keyword"
         class="px-6 py-2.5 rounded-full font-bold text-sm tracking-wider transition"
@@ -41,6 +42,12 @@ const keyword = ref('')
 const names = ref([])
 const loading = ref(false)
 const detailName = ref(null)
+const composing = ref(false)
+
+function onInput(e) {
+  if (composing.value) return
+  keyword.value = e.target.value.slice(0, 1)
+}
 
 async function generate() {
   if (!keyword.value) return

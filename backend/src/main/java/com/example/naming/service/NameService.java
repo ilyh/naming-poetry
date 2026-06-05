@@ -233,6 +233,10 @@ public class NameService {
         return nameRecordRepository.findAllByOrderByCreatedAtDesc(PageRequest.of(page, size));
     }
 
+    public Optional<NameRecord> findById(Long id) {
+        return nameRecordRepository.findById(id);
+    }
+
     private String formatSourceNote(Poem poem) {
         String sourceName = SOURCE_NAMES.getOrDefault(poem.getSource(), poem.getSource());
         String note = sourceName + "·" + poem.getTitle();

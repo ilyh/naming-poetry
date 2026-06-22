@@ -1,0 +1,66 @@
+/* 全局样式变量 */
+
+/* 颜色 */
+$color-paper: #FAF8F5;
+$color-cream: #FAF8F5;
+$color-cream-dark: #F3F0EB;
+$color-warm-brown: #1A1A1A;
+$color-warm-gray: #5C5C5C;
+$color-teal-warm: #11554F;
+$color-teal-light: #1A7A72;
+$color-stone-100: #F5F5F4;
+$color-stone-300: #D6D3D1;
+$color-stone-400: #A8A29E;
+
+/* 间距 */
+$spacing-xs: 8rpx;
+$spacing-sm: 16rpx;
+$spacing-md: 24rpx;
+$spacing-lg: 32rpx;
+$spacing-xl: 48rpx;
+
+/* 圆角 */
+$radius-sm: 8rpx;
+$radius-md: 16rpx;
+$radius-lg: 24rpx;
+$radius-xl: 32rpx;
+$radius-full: 9999rpx;
+
+/* 字体 */
+$font-serif: "Songti SC", "SimSun", "Noto Serif SC", "Source Han Serif SC", serif;
+$font-kaiti: "STKaiti", "Kaiti SC", serif;
+
+/* 阴影 - 纸卡 */
+$shadow-card: 0 2rpx 4rpx rgba(0, 0, 0, 0.02), 0 8rpx 32rpx rgba(0, 0, 0, 0.03);
+
+/* 通用样式类 */
+.paper-card {
+  background: #FFFFFF;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  box-shadow: $shadow-card;
+  border-radius: $radius-lg;
+}
+
+.font-serif-name {
+  font-family: $font-serif;
+}
+
+.font-kaiti {
+  font-family: $font-kaiti;
+}
+
+/* 卡牌入场动画 */
+@keyframes card-rise {
+  from { opacity: 0; transform: translateY(12rpx); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.card-enter {
+  animation: card-rise 420ms ease both;
+}
+
+/* 诗句中名字字符高亮 */
+.sentence-highlight {
+  color: #11554F;
+  font-weight: 600;
+}

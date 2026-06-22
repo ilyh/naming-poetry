@@ -1,0 +1,41 @@
+{
+  "pages": [
+    {
+      "path": "pages/index/index",
+      "style": {
+        "navigationBarTitleText": "古诗文起名",
+        "navigationStyle": "custom",
+        "enablePullDownRefresh": false,
+        "backgroundColor": "#FAF8F5"
+      }
+    },
+    {
+      "path": "pages/poem/poem",
+      "style": {
+        "navigationBarTitleText": "诗词详情",
+        "navigationBarBackgroundColor": "#FAF8F5",
+        "navigationBarTextStyle": "black",
+        "backgroundColor": "#FAF8F5"
+      }
+    },
+    {
+      "path": "pages/history/history",
+      "style": {
+        "navigationBarTitleText": "历史记录",
+        "navigationBarBackgroundColor": "#FAF8F5",
+        "navigationBarTextStyle": "black",
+        "backgroundColor": "#FAF8F5"
+      }
+    }
+  ],
+  "globalStyle": {
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "古诗文起名",
+    "navigationBarBackgroundColor": "#FAF8F5",
+    "backgroundColor": "#FAF8F5"
+  },
+  "easycom": {
+    "autoscan": true,
+    "custom": {}
+  }
+}

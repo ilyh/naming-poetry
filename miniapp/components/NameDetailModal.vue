@@ -7,7 +7,7 @@
 
       <view class="modal-source-box">
         <text class="modal-source-label">出处诗句</text>
-        <text class="modal-source-text" v-html="highlightedSentence"></text>
+        <rich-text class="modal-source-text" :nodes="highlightedNodes"></rich-text>
         <text v-if="name.sourceNote" class="modal-source-note">出处：{{ name.sourceNote }}</text>
       </view>
 
@@ -30,23 +30,17 @@
 
 <script setup>
 import { computed } from 'vue'
+import { buildHighlightNodes } from '../composables/useHighlight'
 
 const props = defineProps({ name: { type: Object, required: true } })
 const emit = defineEmits(['close'])
 
-const highlightedSentence = computed(() => {
+const highlightedNodes = computed(() => {
   const sentence = props.name.sources?.[0] || ''
-  if (!sentence || !props.name.givenName) return '「' + sentence + '」'
-  const chars = props.name.givenName.split('')
-  let result = ''
-  for (const ch of sentence) {
-    if (chars.includes(ch)) {
-      result += `<span style="color:#11554F;font-weight:600;">${ch}</span>`
-    } else {
-      result += ch
-    }
+  if (!sentence || !props.name.givenName) {
+    return [{ type: 'text', text: '「' + sentence + '」' }]
   }
-  return '「' + result + '」'
+  return buildHighlightNodes(sentence, props.name.givenName)
 })
 </script>
 

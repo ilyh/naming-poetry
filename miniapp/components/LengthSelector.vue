@@ -47,7 +47,7 @@ defineEmits(['update:modelValue'])
   color: #5C5C5C;
   border: 1px solid rgba(214, 211, 209, 0.4);
   background: rgba(250, 248, 245, 0.8);
-  transition: all 0.2s;
+  transition: background 0.2s, color 0.2s, border-color 0.2s;
 }
 
 .length-btn--active {

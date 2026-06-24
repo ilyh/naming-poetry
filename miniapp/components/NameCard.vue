@@ -1,5 +1,5 @@
 <template>
-  <view class="paper-card name-card card-enter" :style="{ animationDelay: (index || 0) * 55 + 'ms' }">
+  <view class="paper-card name-card card-enter" :style="{ animationDelay: (index || 0) * 55 + 'ms' }" @click="emit('detail', name)">
     <view class="name-header">
       <view class="name-title-group">
         <text class="name-badge">候选 {{ String(index + 1).padStart(2, '0') }}</text>
@@ -14,31 +14,34 @@
           </template>
         </view>
       </view>
-      <view class="copy-btn" @click="copyName">
+      <view class="copy-btn" @click.stop="copyName">
         <text class="copy-btn-text">{{ copied ? '已复制' : '复制' }}</text>
       </view>
     </view>
 
     <view class="name-sentence">
-      <text class="name-sentence-text" v-html="highlightedSentence"></text>
+      <rich-text class="name-sentence-text" :nodes="highlightedNodes"></rich-text>
     </view>
 
-    <view class="name-footer" @click="openPoem">
-      <text class="name-source">{{ name.poemId ? '出处：' + (name.sourceNote || (name.sources?.[0] || '未知')) : '出处：' + (name.sourceNote || (name.sources?.[0] || '未知')) }}</text>
+    <view class="name-footer" @click.stop="openPoem">
+      <text class="name-source">出处：{{ name.sourceNote || (name.sources?.[0] || '未知') }}</text>
     </view>
   </view>
 </template>
 
 <script setup>
-import { computed, ref, watch } from 'vue'
+import { computed, ref, onUnmounted } from 'vue'
 import { isChinese, getPinyin } from '../composables/usePinyin'
+import { buildHighlightNodes } from '../composables/useHighlight'
 
 const props = defineProps({
   name: { type: Object, required: true },
   index: { type: Number, default: 0 }
 })
+const emit = defineEmits(['detail'])
 
 const copied = ref(false)
+let copyTimer = null
 
 function openPoem() {
   if (!props.name.poemId) return
@@ -47,19 +50,12 @@ function openPoem() {
   })
 }
 
-const highlightedSentence = computed(() => {
+const highlightedNodes = computed(() => {
   const sentence = props.name.sources?.[0] || ''
-  if (!sentence || !props.name.givenName) return '「' + sentence + '」'
-  const chars = props.name.givenName.split('')
-  let result = ''
-  for (const ch of sentence) {
-    if (chars.includes(ch)) {
-      result += `<span style="color:#11554F;font-weight:600;">${ch}</span>`
-    } else {
-      result += ch
-    }
+  if (!sentence || !props.name.givenName) {
+    return [{ type: 'text', text: '「' + sentence + '」' }]
   }
-  return '「' + result + '」'
+  return buildHighlightNodes(sentence, props.name.givenName)
 })
 
 function copyName() {
@@ -67,12 +63,18 @@ function copyName() {
   if (!text) return
   uni.setClipboardData({
     data: text,
+    showToast: false,
     success() {
       copied.value = true
-      setTimeout(() => { copied.value = false }, 1500)
+      if (copyTimer) clearTimeout(copyTimer)
+      copyTimer = setTimeout(() => { copied.value = false }, 1500)
     }
   })
 }
+
+onUnmounted(() => {
+  if (copyTimer) clearTimeout(copyTimer)
+})
 </script>
 
 <style scoped>
@@ -142,7 +144,7 @@ function copyName() {
   border: 1px solid rgba(17, 85, 79, 0.2);
   background: rgba(250, 248, 245, 0.8);
   flex-shrink: 0;
-  transition: all 0.2s;
+  transition: background 0.2s, border-color 0.2s;
 }
 
 .copy-btn-text {

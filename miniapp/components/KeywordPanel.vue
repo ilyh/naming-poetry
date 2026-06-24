@@ -4,7 +4,7 @@
       <input
         :value="keyword"
         @input="onInput"
-        @confirm="onInput"
+        @confirm="generate"
         placeholder="输入偏好字，如：清"
         class="keyword-input"
         placeholder-class="keyword-placeholder"
@@ -21,7 +21,7 @@
     <view v-if="names.length > 0" class="name-grid">
       <NameCard
         v-for="(name, i) in names"
-        :key="i"
+        :key="name._key"
         :name="name"
         :index="i"
         @detail="detailName = name"
@@ -62,6 +62,7 @@ function onInput(e) {
 
 async function generate() {
   if (!keyword.value) return
+  if (loading.value) return
   loading.value = true
   try {
     const { data } = await generateKeyword({
@@ -71,10 +72,11 @@ async function generate() {
       length: props.length,
       sources: props.sources.length > 0 ? props.sources : null
     })
-    names.value = data.names || []
+    const stamp = Date.now()
+    names.value = (data.names || []).map((n, idx) => ({ ...n, _key: stamp + '_' + idx }))
   } catch (e) {
     console.error('Generate failed', e)
-    uni.showToast({ title: '生成失败，请重试', icon: 'none' })
+    uni.showToast({ title: e.message || '生成失败，请重试', icon: 'none' })
   } finally {
     loading.value = false
   }
@@ -140,6 +142,7 @@ async function generate() {
 
 .btn--disabled {
   opacity: 0.6;
+  pointer-events: none;
 }
 
 .name-grid {

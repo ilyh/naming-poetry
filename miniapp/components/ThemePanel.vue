@@ -24,7 +24,7 @@
     <view v-if="names.length > 0" class="name-grid">
       <NameCard
         v-for="(name, i) in names"
-        :key="i"
+        :key="name._key"
         :name="name"
         :index="i"
         @detail="detailName = name"
@@ -67,6 +67,7 @@ function toggleTheme(theme) {
 
 async function generate() {
   if (selectedThemes.value.length === 0) return
+  if (loading.value) return
   loading.value = true
   try {
     const { data } = await generateTheme({
@@ -76,10 +77,11 @@ async function generate() {
       length: props.length,
       sources: props.sources.length > 0 ? props.sources : null
     })
-    names.value = data.names || []
+    const stamp = Date.now()
+    names.value = (data.names || []).map((n, idx) => ({ ...n, _key: stamp + '_' + idx }))
   } catch (e) {
     console.error('Generate failed', e)
-    uni.showToast({ title: '生成失败，请重试', icon: 'none' })
+    uni.showToast({ title: e.message || '生成失败，请重试', icon: 'none' })
   } finally {
     loading.value = false
   }
@@ -100,7 +102,7 @@ async function generate() {
   border-radius: 9999rpx;
   border: 1px solid rgba(214, 211, 209, 0.4);
   background: rgba(250, 248, 245, 0.8);
-  transition: all 0.2s;
+  transition: background 0.2s, border-color 0.2s, color 0.2s;
 }
 
 .theme-tag text {
@@ -160,6 +162,7 @@ async function generate() {
 
 .btn--disabled {
   opacity: 0.6;
+  pointer-events: none;
 }
 
 .name-grid {

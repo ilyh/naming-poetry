@@ -1,6 +1,6 @@
 <template>
   <view class="history-page">
-    <view v-if="loading" class="loading-state">
+    <view v-if="loading && records.length === 0" class="loading-state">
       <text class="loading-text">加载中...</text>
     </view>
     <view v-else-if="records.length === 0" class="empty-state">
@@ -14,29 +14,70 @@
         </view>
         <text class="history-mode">{{ r.mode === 'random' ? '随机' : r.mode === 'keyword' ? '关键词' : r.mode === 'theme' ? '主题' : r.mode }}</text>
       </view>
+      <view v-if="loadingMore" class="loading-more">
+        <text class="loading-more-text">加载中...</text>
+      </view>
+      <view v-else-if="!hasMore" class="no-more">
+        <text class="no-more-text">没有更多了</text>
+      </view>
     </view>
   </view>
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref } from 'vue'
+import { onReachBottom, onPullDownRefresh } from '@dcloudio/uni-app'
 import { getHistory } from '../../api/index.js'
 
 const records = ref([])
 const loading = ref(true)
+const loadingMore = ref(false)
+const page = ref(0)
+const hasMore = ref(true)
+const PAGE_SIZE = 20
 
-onMounted(async () => {
+async function loadFirst() {
   loading.value = true
+  page.value = 0
+  hasMore.value = true
   try {
-    const { data } = await getHistory()
+    const { data } = await getHistory(0, PAGE_SIZE)
     records.value = data.content || []
+    hasMore.value = !data.last
   } catch (e) {
     console.error('Failed to load history', e)
-    uni.showToast({ title: '加载历史记录失败', icon: 'none' })
+    uni.showToast({ title: e.message || '加载历史记录失败', icon: 'none' })
   } finally {
     loading.value = false
   }
+}
+
+async function loadMore() {
+  if (loadingMore.value || !hasMore.value) return
+  loadingMore.value = true
+  try {
+    const nextPage = page.value + 1
+    const { data } = await getHistory(nextPage, PAGE_SIZE)
+    records.value = records.value.concat(data.content || [])
+    page.value = nextPage
+    hasMore.value = !data.last
+  } catch (e) {
+    console.error('Failed to load more history', e)
+  } finally {
+    loadingMore.value = false
+  }
+}
+
+onReachBottom(() => {
+  loadMore()
 })
+
+onPullDownRefresh(async () => {
+  await loadFirst()
+  uni.stopPullDownRefresh()
+})
+
+loadFirst()
 </script>
 
 <style scoped>
@@ -102,6 +143,20 @@ onMounted(async () => {
 
 .history-mode {
   font-size: 22rpx;
+  color: #A8A29E;
+}
+
+.loading-more,
+.no-more {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32rpx 0;
+}
+
+.loading-more-text,
+.no-more-text {
+  font-size: 24rpx;
   color: #A8A29E;
 }
 </style>

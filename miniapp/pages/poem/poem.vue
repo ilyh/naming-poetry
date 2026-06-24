@@ -16,7 +16,8 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref } from 'vue'
+import { onLoad } from '@dcloudio/uni-app'
 import { getPoem } from '../../api/index.js'
 import PoemContent from '../../components/PoemContent.vue'
 
@@ -25,11 +26,8 @@ const poem = ref(null)
 const loading = ref(true)
 const error = ref('')
 
-onMounted(() => {
-  const pages = getCurrentPages()
-  const currentPage = pages[pages.length - 1]
-  const options = currentPage.options || currentPage.$page?.options || {}
-  poemId.value = options.id
+onLoad((options) => {
+  poemId.value = options?.id
   if (poemId.value) {
     loadPoem()
   } else {

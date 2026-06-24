@@ -39,7 +39,7 @@ const tabs = [
   color: #5C5C5C;
   border-bottom: 4rpx solid transparent;
   margin-bottom: -2rpx;
-  transition: all 0.2s;
+  transition: color 0.2s, border-bottom-color 0.2s;
 }
 
 .tab-item--active {

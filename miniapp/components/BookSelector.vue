@@ -52,13 +52,25 @@ const defaults = [
 
 const books = ref([...defaults])
 
+let statsCache = null
+let statsCacheTime = 0
+const STATS_CACHE_TTL = 5 * 60 * 1000
+
 onMounted(async () => {
+  const now = Date.now()
+  if (statsCache && now - statsCacheTime < STATS_CACHE_TTL) {
+    books.value = statsCache
+    return
+  }
   try {
     const { data } = await getStats()
-    books.value = defaults.map(b => ({
+    const updated = defaults.map(b => ({
       ...b,
       count: data[b.value] || b.count
     }))
+    statsCache = updated
+    statsCacheTime = now
+    books.value = updated
   } catch (e) {
     // keep defaults on error
   }
@@ -95,7 +107,7 @@ function toggle(value) {
   border-radius: 16rpx;
   border: 1px solid #D6D3D1;
   background: #FFFFFF;
-  transition: all 0.2s;
+  transition: border-color 0.2s, background 0.2s;
 }
 
 .book-item--selected {

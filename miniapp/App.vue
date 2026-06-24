@@ -1,7 +1,10 @@
 <script>
 export default {
   onLaunch() {
-    console.log('古诗文起名 小程序启动')
+    // console.log('古诗文起名 小程序启动')
+  },
+  onError(err) {
+    uni.showToast({ title: '开小差了，请稍后再试', icon: 'none' })
   },
   onShow() {
     // console.log('App Show')

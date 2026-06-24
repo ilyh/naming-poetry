@@ -1,11 +1,14 @@
 const BASE_URL = 'https://www.xiaochanmao.top'
 
+export { BASE_URL }
+
 function request(url, options = {}) {
   return new Promise((resolve, reject) => {
     uni.request({
       url: BASE_URL + url,
       method: options.method || 'GET',
       data: options.data,
+      timeout: options.timeout || 15000,
       header: {
         'Content-Type': 'application/json',
         ...options.header
@@ -14,7 +17,8 @@ function request(url, options = {}) {
         if (res.statusCode >= 200 && res.statusCode < 300) {
           resolve({ data: res.data })
         } else {
-          reject(new Error(`Request failed with status ${res.statusCode}`))
+          const msg = (res.data && res.data.message) || `Request failed with status ${res.statusCode}`
+          reject(new Error(msg))
         }
       },
       fail(err) {

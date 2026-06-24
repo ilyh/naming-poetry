@@ -24,7 +24,8 @@
         "navigationBarTitleText": "历史记录",
         "navigationBarBackgroundColor": "#FAF8F5",
         "navigationBarTextStyle": "black",
-        "backgroundColor": "#FAF8F5"
+        "backgroundColor": "#FAF8F5",
+        "enablePullDownRefresh": true
       }
     }
   ],

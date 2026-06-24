@@ -26,19 +26,19 @@
       <text class="names-title">候选名字</text>
 
       <RandomPanel
-        v-if="activeTab === 'random'"
+        v-show="activeTab === 'random'"
         :surname="surname"
         :length="nameLength"
         :sources="selectedSources"
       />
       <KeywordPanel
-        v-if="activeTab === 'keyword'"
+        v-show="activeTab === 'keyword'"
         :surname="surname"
         :length="nameLength"
         :sources="selectedSources"
       />
       <ThemePanel
-        v-if="activeTab === 'theme'"
+        v-show="activeTab === 'theme'"
         :surname="surname"
         :length="nameLength"
         :sources="selectedSources"

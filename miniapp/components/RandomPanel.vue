@@ -12,7 +12,7 @@
     <view v-if="names.length > 0" class="name-grid">
       <NameCard
         v-for="(name, i) in names"
-        :key="i"
+        :key="name._key"
         :name="name"
         :index="i"
         @detail="detailName = name"
@@ -46,6 +46,7 @@ const loading = ref(false)
 const detailName = ref(null)
 
 async function generate() {
+  if (loading.value) return
   loading.value = true
   try {
     const { data } = await generateRandom({
@@ -54,10 +55,11 @@ async function generate() {
       length: props.length,
       sources: props.sources.length > 0 ? props.sources : null
     })
-    names.value = data.names || []
+    const stamp = Date.now()
+    names.value = (data.names || []).map((n, idx) => ({ ...n, _key: stamp + '_' + idx }))
   } catch (e) {
     console.error('Generate failed', e)
-    uni.showToast({ title: '生成失败，请重试', icon: 'none' })
+    uni.showToast({ title: e.message || '生成失败，请重试', icon: 'none' })
   } finally {
     loading.value = false
   }
@@ -107,6 +109,7 @@ async function generate() {
 
 .btn--disabled {
   opacity: 0.6;
+  pointer-events: none;
 }
 
 .name-grid {

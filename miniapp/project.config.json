@@ -2,7 +2,7 @@
   "miniprogramRoot": "dist/dev/mp-weixin/",
   "projectname": "naming-poetry-miniapp",
   "description": "古诗文起名",
-  "appid": "",
+  "appid": "wxe0fee17676efd680",
   "setting": {
     "urlCheck": true,
     "es6": true,

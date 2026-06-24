@@ -18,7 +18,9 @@
 
     <!-- 正文 -->
     <view :class="['poem-body', isCi ? 'poem-body--ci' : 'poem-body--shi']">
-      <text v-for="(line, i) in formattedLines" :key="i" class="poem-line" v-html="line" />
+      <view v-for="(nodes, i) in formattedNodes" :key="i" class="poem-line">
+        <rich-text :nodes="nodes" />
+      </view>
     </view>
 
     <!-- 底部分隔 -->
@@ -32,6 +34,7 @@
 
 <script setup>
 import { computed } from 'vue'
+import { buildPunctuationFadedNodes } from '../composables/useHighlight'
 
 const props = defineProps({
   poem: { type: Object, required: true }
@@ -39,18 +42,14 @@ const props = defineProps({
 
 const isCi = computed(() => props.poem.source === 'song')
 
-function fadePunctuation(text) {
-  return text.replace(/([，。！？；：、])/g, '<span style="opacity:0.45;">$1</span>')
-}
-
-const formattedLines = computed(() => {
+const formattedNodes = computed(() => {
   const content = props.poem.content || ''
   const normalized = content.replace(/\n+/g, '。').replace(/。{2,}/g, '。')
   const parts = normalized
     .split(/(?<=[。！？；])/)
     .map(s => s.trim())
     .filter(Boolean)
-    .map(fadePunctuation)
+    .map(line => buildPunctuationFadedNodes(line))
 
   return parts
 })
@@ -124,6 +123,8 @@ const formattedLines = computed(() => {
   line-height: 2.4;
   letter-spacing: 8rpx;
   display: block;
+  white-space: nowrap;
+  overflow-x: auto;
 }
 
 .poem-body--ci {

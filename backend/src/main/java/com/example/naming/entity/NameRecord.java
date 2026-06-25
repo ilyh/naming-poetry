@@ -32,6 +32,9 @@ public class NameRecord {
     @Column(length = 20)
     private String mode;
 
+    @Column(name = "session_id", length = 64)
+    private String sessionId;
+
     @Column(name = "created_at")
     private LocalDateTime createdAt = LocalDateTime.now();
 
@@ -53,6 +56,8 @@ public class NameRecord {
     public void setSource3Id(Long source3Id) { this.source3Id = source3Id; }
     public String getMode() { return mode; }
     public void setMode(String mode) { this.mode = mode; }
+    public String getSessionId() { return sessionId; }
+    public void setSessionId(String sessionId) { this.sessionId = sessionId; }
     public LocalDateTime getCreatedAt() { return createdAt; }
     public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
 }

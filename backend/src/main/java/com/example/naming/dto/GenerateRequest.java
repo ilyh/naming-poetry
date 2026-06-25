@@ -10,6 +10,7 @@ public class GenerateRequest {
     private List<String> sources;
     private Integer count = 5;
     private Integer length = 2;
+    private String sessionId;
 
     public String getSurname() { return surname; }
     public void setSurname(String surname) { this.surname = surname; }
@@ -23,4 +24,6 @@ public class GenerateRequest {
     public void setCount(Integer count) { this.count = count; }
     public Integer getLength() { return length; }
     public void setLength(Integer length) { this.length = length; }
+    public String getSessionId() { return sessionId; }
+    public void setSessionId(String sessionId) { this.sessionId = sessionId; }
 }

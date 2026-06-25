@@ -7,4 +7,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface NameRecordRepository extends JpaRepository<NameRecord, Long> {
     Page<NameRecord> findAllByOrderByCreatedAtDesc(Pageable pageable);
+    Page<NameRecord> findBySessionIdOrderByCreatedAtDesc(String sessionId, Pageable pageable);
 }

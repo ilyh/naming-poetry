@@ -1,6 +1,25 @@
 import axios from 'axios'
 
+function getSessionId() {
+  let sid = localStorage.getItem('sessionId')
+  if (!sid) {
+    sid = 'web-' + Date.now() + '-' + Math.random().toString(36).slice(2, 10)
+    localStorage.setItem('sessionId', sid)
+  }
+  return sid
+}
+
 const api = axios.create({ baseURL: '/api' })
+
+api.interceptors.request.use(config => {
+  const sessionId = getSessionId()
+  if (config.method === 'post' && config.data) {
+    config.data.sessionId = sessionId
+  } else if (config.method === 'get') {
+    config.params = { ...config.params, sessionId }
+  }
+  return config
+})
 
 export function generateRandom(params) {
   return api.post('/name/random', params)
@@ -32,6 +51,18 @@ export function updateBlacklist(chars) {
 
 export function reloadBlacklist() {
   return api.post('/admin/blacklist/reload')
+}
+
+export function getPhraseBlacklist() {
+  return api.get('/admin/phrase-blacklist')
+}
+
+export function updatePhraseBlacklist(phrases) {
+  return api.post('/admin/phrase-blacklist', { phrases })
+}
+
+export function reloadPhraseBlacklist() {
+  return api.post('/admin/phrase-blacklist/reload')
 }
 
 export function getPoem(id) {

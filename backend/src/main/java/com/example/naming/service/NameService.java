@@ -10,6 +10,7 @@ import com.example.naming.repository.NameRecordRepository;
 import com.example.naming.repository.PoemRepository;
 import com.example.naming.repository.PoemWordRepository;
 import com.example.naming.config.BlacklistConfig;
+import com.example.naming.config.PhraseBlacklistConfig;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -23,6 +24,7 @@ public class NameService {
     private final PoemWordRepository poemWordRepository;
     private final NameRecordRepository nameRecordRepository;
     private final BlacklistConfig blacklistConfig;
+    private final PhraseBlacklistConfig phraseBlacklistConfig;
     private final Random random = new Random();
 
     private static final int RANDOM_POEM_SAMPLE = 300;
@@ -40,12 +42,13 @@ public class NameService {
     );
 
     
-    public NameService(PoemRepository poemRepository, PoemWordRepository poemWordRepository, NameRecordRepository nameRecordRepository, BlacklistConfig blacklistConfig) {
+    public NameService(PoemRepository poemRepository, PoemWordRepository poemWordRepository, NameRecordRepository nameRecordRepository, BlacklistConfig blacklistConfig, PhraseBlacklistConfig phraseBlacklistConfig) {
         this.poemRepository = poemRepository;
         this.poemWordRepository = poemWordRepository;
         this.nameRecordRepository = nameRecordRepository;
         this.cachedPoems = new ArrayList<>();
         this.blacklistConfig = blacklistConfig;
+        this.phraseBlacklistConfig = phraseBlacklistConfig;
         loadPoemsToCache();
     }
 
@@ -178,6 +181,10 @@ public class NameService {
             String surname = req.getSurname() != null ? req.getSurname() : "";
             String fullName = surname + givenName;
 
+            if (phraseBlacklistConfig.contains(givenName) || phraseBlacklistConfig.contains(fullName)) {
+                continue;
+            }
+
             List<String> sources = List.of(sentence);
 
             GenerateResponse.NameItem item = new GenerateResponse.NameItem(
@@ -196,6 +203,7 @@ public class NameService {
                     r.setGivenName(n.getGivenName());
                     r.setFullName(n.getText());
                     r.setMode(mode);
+                    r.setSessionId(req.getSessionId());
                     return r;
                 })
                 .toList();
@@ -245,7 +253,10 @@ public class NameService {
         return sb.toString();
     }
 
-    public Page<NameRecord> getHistory(int page, int size) {
+    public Page<NameRecord> getHistory(String sessionId, int page, int size) {
+        if (sessionId != null && !sessionId.isEmpty()) {
+            return nameRecordRepository.findBySessionIdOrderByCreatedAtDesc(sessionId, PageRequest.of(page, size));
+        }
         return nameRecordRepository.findAllByOrderByCreatedAtDesc(PageRequest.of(page, size));
     }
 

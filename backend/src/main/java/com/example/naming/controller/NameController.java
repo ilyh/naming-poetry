@@ -52,8 +52,9 @@ public class NameController {
     @GetMapping("/history")
     public ResponseEntity<Page<NameRecord>> history(
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "20") int size) {
-        return ResponseEntity.ok(nameService.getHistory(page, size));
+            @RequestParam(defaultValue = "20") int size,
+            @RequestParam(required = false) String sessionId) {
+        return ResponseEntity.ok(nameService.getHistory(sessionId, page, size));
     }
 
     @PostMapping("/admin/import")

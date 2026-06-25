@@ -3,8 +3,21 @@
   "private": true,
   "version": "1.0.0",
   "description": "古诗文起名 - 微信小程序",
-  "scripts": {},
+  "scripts": {
+    "dev:mp-weixin": "cross-env UNI_INPUT_DIR=. uni -p mp-weixin",
+    "build:mp-weixin": "cross-env UNI_INPUT_DIR=. uni build -p mp-weixin"
+  },
   "dependencies": {
-    "pinyin-pro": "^3.28.1"
+    "@dcloudio/uni-app": "3.0.0-alpha-1000920260615733",
+    "@dcloudio/uni-components": "3.0.0-alpha-1000920260615733",
+    "@dcloudio/uni-mp-weixin": "3.0.0-alpha-1000920260615733",
+    "pinyin-pro": "^3.28.1",
+    "vue": "^3.5.38"
+  },
+  "devDependencies": {
+    "@dcloudio/uni-cli-shared": "3.0.0-alpha-1000920260615733",
+    "@dcloudio/vite-plugin-uni": "3.0.0-alpha-1000920260615733",
+    "cross-env": "^7.0.3",
+    "vite": "7.3.3"
   }
 }

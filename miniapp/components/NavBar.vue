@@ -3,7 +3,7 @@
     <view class="navbar-content">
       <text class="navbar-title">古诗文起名</text>
       <view class="navbar-right">
-        <text class="navbar-link" @click="goHistory">历史记录</text>
+        <text class="navbar-link" @click="goHistory()">历史记录</text>
       </view>
     </view>
   </view>

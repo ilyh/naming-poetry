@@ -39,3 +39,6 @@ Thumbs.db
 node_modules/
 dist/
 unpackage/
+
+# WeChat dev tool local
+miniapp/project.private.config.json

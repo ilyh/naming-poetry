@@ -6,12 +6,7 @@
       <text class="hero-divider-dot">◇</text>
       <view class="hero-divider-line" />
     </view>
-    <text class="hero-subtitle">「从千年诗词中，觅一个好名」</text>
-    <view class="hero-divider hero-divider-sm">
-      <view class="hero-divider-line-short" />
-      <text class="hero-divider-dot-sm">·</text>
-      <view class="hero-divider-line-short" />
-    </view>
+    <text class="hero-subtitle">从千年诗词中，觅一个好名</text>
   </view>
 </template>
 
@@ -20,56 +15,40 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 64rpx 48rpx 40rpx;
+  padding: 40rpx 48rpx 24rpx;
 }
 
 .hero-title {
-  font-family: "Songti SC", "SimSun", serif;
-  font-size: 64rpx;
+  font-family: "Songti SC", "SimSun", "Noto Serif SC", serif;
+  font-size: 56rpx;
+  font-weight: 700;
   color: #1A1A1A;
-  letter-spacing: 12rpx;
-  margin-bottom: 16rpx;
+  letter-spacing: 10rpx;
+  margin-bottom: 12rpx;
 }
 
 .hero-divider {
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 12rpx;
+  margin-bottom: 10rpx;
 }
 
 .hero-divider-line {
-  width: 80rpx;
+  width: 60rpx;
   height: 1px;
-  background: #D6D3D1;
+  background: rgba(214, 211, 209, 0.8);
 }
 
 .hero-divider-dot {
-  margin: 0 12rpx;
-  font-size: 24rpx;
-  color: #A8A29E;
-}
-
-.hero-divider-sm {
-  margin-top: 12rpx;
-  margin-bottom: 0;
-}
-
-.hero-divider-line-short {
-  width: 48rpx;
-  height: 1px;
-  background: rgba(214, 211, 209, 0.6);
-}
-
-.hero-divider-dot-sm {
-  margin: 0 12rpx;
+  margin: 0 10rpx;
   font-size: 20rpx;
   color: #A8A29E;
 }
 
 .hero-subtitle {
-  font-size: 30rpx;
-  color: #5C5C5C;
-  letter-spacing: 4rpx;
+  font-size: 24rpx;
+  color: rgba(92, 92, 92, 0.7);
+  letter-spacing: 3rpx;
 }
 </style>

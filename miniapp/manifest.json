@@ -1,6 +1,6 @@
 {
   "name": "古诗文起名",
-  "appid": "",
+  "appid": "wxe0fee17676efd680",
   "description": "从千年诗词中，觅一个好名",
   "versionName": "1.0.0",
   "versionCode": "100",
@@ -30,8 +30,7 @@
     "setting": {
       "urlCheck": true
     },
-    "usingComponents": true,
-    "lazyCodeLoading": "requiredComponents"
+    "usingComponents": true
   },
   "mp-alipay": {
     "usingComponents": true

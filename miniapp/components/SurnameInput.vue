@@ -3,7 +3,7 @@
     <text class="surname-label">姓氏</text>
     <input
       :value="modelValue"
-      @input="onInput"
+      @input="onInput($event)"
       maxlength="4"
       placeholder="李"
       class="surname-field"

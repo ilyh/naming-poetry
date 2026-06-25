@@ -2,11 +2,28 @@ const BASE_URL = 'https://www.xiaochanmao.top'
 
 export { BASE_URL }
 
+function getSessionId() {
+  let sid = uni.getStorageSync('sessionId')
+  if (!sid) {
+    sid = 'mp-' + Date.now() + '-' + Math.random().toString(36).slice(2, 10)
+    uni.setStorageSync('sessionId', sid)
+  }
+  return sid
+}
+
 function request(url, options = {}) {
+  const sessionId = getSessionId()
+  const method = (options.method || 'GET').toUpperCase()
+  if (method === 'POST' && options.data) {
+    options.data.sessionId = sessionId
+  } else {
+    const sep = url.includes('?') ? '&' : '?'
+    url = url + sep + 'sessionId=' + encodeURIComponent(sessionId)
+  }
   return new Promise((resolve, reject) => {
     uni.request({
       url: BASE_URL + url,
-      method: options.method || 'GET',
+      method,
       data: options.data,
       timeout: options.timeout || 15000,
       header: {

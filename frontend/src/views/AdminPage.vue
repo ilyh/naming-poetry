@@ -14,6 +14,7 @@
           @remove="handleRemove"
           @add="handleAdd"
         />
+        <PhrasePanel :toast="showToast" />
       </div>
     </div>
     <Teleport to="body">
@@ -31,6 +32,7 @@ import { ref, computed, onMounted, onUnmounted } from 'vue'
 import AdminSidebar from '../components/AdminSidebar.vue'
 import BatchEditor from '../components/BatchEditor.vue'
 import CharGrid from '../components/CharGrid.vue'
+import PhrasePanel from '../components/PhrasePanel.vue'
 import { getBlacklist, updateBlacklist } from '../api'
 
 const chars = ref('')

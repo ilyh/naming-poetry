@@ -3,6 +3,7 @@ package com.example.naming.service;
 import com.example.naming.dto.GenerateRequest;
 import com.example.naming.dto.GenerateResponse;
 import com.example.naming.dto.PoemCacheItem;
+import com.example.naming.dto.BookStat;
 import com.example.naming.entity.NameRecord;
 import com.example.naming.entity.Poem;
 import com.example.naming.entity.PoemWord;
@@ -31,15 +32,25 @@ public class NameService {
 
     private final List<PoemCacheItem> cachedPoems;
 
-    private static final Map<String, String> SOURCE_NAMES = Map.of(
-        "shijing", "诗经",
-        "chuci", "楚辞",
-        "tang", "唐诗",
-        "song", "宋词",
-        "yuefu", "乐府诗集",
-        "gushi", "古诗",
-        "cifu", "著名辞赋"
-    );
+    private static final Map<String, String[]> SOURCE_META;
+    private static final Map<String, String> SOURCE_NAMES;
+
+    static {
+        Map<String, String[]> meta = new LinkedHashMap<>();
+        meta.put("shijing", new String[]{"诗经", "先秦风雅，适合温润清朗的名字。"});
+        meta.put("chuci", new String[]{"楚辞", "瑰丽浪漫，适合大气华美的名字。"});
+        meta.put("tang", new String[]{"唐诗", "意象明朗，适合开阔俊逸的名字。"});
+        meta.put("song", new String[]{"宋词", "婉约含蓄，适合柔和灵秀的名字。"});
+        meta.put("yuefu", new String[]{"乐府诗集", "语言生动，适合自然鲜活的名字。"});
+        meta.put("gushi", new String[]{"古诗", "经典凝练，适合耐看沉静的名字。"});
+        meta.put("cifu", new String[]{"著名辞赋", "铺陈华采，适合丰沛典雅的名字。"});
+        meta.put("nalan", new String[]{"纳兰词", "清丽哀婉，适合深情隽秀的名字。"});
+        SOURCE_META = Collections.unmodifiableMap(meta);
+
+        Map<String, String> names = new LinkedHashMap<>();
+        meta.forEach((k, v) -> names.put(k, v[0]));
+        SOURCE_NAMES = Collections.unmodifiableMap(names);
+    }
 
     
     public NameService(PoemRepository poemRepository, PoemWordRepository poemWordRepository, NameRecordRepository nameRecordRepository, BlacklistConfig blacklistConfig, PhraseBlacklistConfig phraseBlacklistConfig) {
@@ -54,6 +65,23 @@ public class NameService {
 
     private void loadPoemsToCache() {
         this.cachedPoems.addAll(poemRepository.findAllCacheItems());
+    }
+
+    public List<BookStat> getBookStats() {
+        Map<String, Long> counts = new LinkedHashMap<>();
+        for (Object[] row : poemRepository.countBySource()) {
+            counts.put((String) row[0], (Long) row[1]);
+        }
+        List<BookStat> result = new ArrayList<>();
+        for (Map.Entry<String, String[]> e : SOURCE_META.entrySet()) {
+            result.add(new BookStat(e.getKey(), e.getValue()[0], e.getValue()[1], counts.getOrDefault(e.getKey(), 0L)));
+        }
+        for (Map.Entry<String, Long> e : counts.entrySet()) {
+            if (!SOURCE_META.containsKey(e.getKey())) {
+                result.add(new BookStat(e.getKey(), SOURCE_NAMES.getOrDefault(e.getKey(), e.getKey()), "", e.getValue()));
+            }
+        }
+        return result;
     }
 
     public GenerateResponse generateRandom(GenerateRequest req) {

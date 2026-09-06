@@ -13,10 +13,10 @@
     </view>
 
     <view class="panel-actions">
-      <view class="btn-primary" @click="generate" :class="{ 'btn--disabled': loading || selectedThemes.length === 0 }">
+      <view class="btn-primary" @click="generate()" :class="{ 'btn--disabled': loading || selectedThemes.length === 0 }">
         <text>{{ loading ? '翻检诗卷中…' : '生成 6 个名字' }}</text>
       </view>
-      <view v-if="names.length > 0" class="btn-secondary" @click="generate" :class="{ 'btn--disabled': loading }">
+      <view v-if="names.length > 0" class="btn-secondary" @click="generate()" :class="{ 'btn--disabled': loading }">
         <text>换一组</text>
       </view>
     </view>

@@ -48,6 +48,7 @@ const defaults = [
   { value: 'yuefu', name: '乐府诗集', count: 34, description: '语言生动，适合自然鲜活的名字。' },
   { value: 'gushi', name: '古诗', count: 11, description: '经典凝练，适合耐看沉静的名字。' },
   { value: 'cifu', name: '著名辞赋', count: 30, description: '铺陈华采，适合丰沛典雅的名字。' },
+  { value: 'nalan', name: '纳兰词', count: 258, description: '清丽哀婉，适合深情隽秀的名字。' },
 ]
 
 const books = ref([...defaults])
@@ -55,10 +56,14 @@ const books = ref([...defaults])
 onMounted(async () => {
   try {
     const { data } = await getStats()
-    books.value = defaults.map(b => ({
-      ...b,
-      count: data[b.value] || b.count
-    }))
+    if (Array.isArray(data) && data.length > 0) {
+      books.value = data.map(b => ({
+        value: b.value,
+        name: b.name || b.value,
+        count: b.count || 0,
+        description: b.description || ''
+      }))
+    }
   } catch (e) {
     // keep defaults on error
   }

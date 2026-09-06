@@ -40,7 +40,7 @@ const props = defineProps({
   poem: { type: Object, required: true }
 })
 
-const isCi = computed(() => props.poem.source === 'song')
+const isCi = computed(() => props.poem.source === 'song' || props.poem.source === 'nalan')
 
 const formattedNodes = computed(() => {
   const content = props.poem.content || ''

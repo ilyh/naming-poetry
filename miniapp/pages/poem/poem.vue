@@ -5,7 +5,7 @@
     </view>
     <view v-else-if="error" class="error-state">
       <text class="error-text">{{ error }}</text>
-      <view class="btn-retry" @click="loadPoem">
+      <view class="btn-retry" @click="loadPoem()">
         <text class="btn-retry-text">重试</text>
       </view>
     </view>

@@ -2,18 +2,16 @@
   <view>
     <view class="panel-actions">
       <input
-        :value="keyword"
-        @input="onInput"
-        @confirm="generate"
+        @input="onInput($event)"
+        @confirm="generate()"
         placeholder="输入偏好字，如：清"
         class="keyword-input"
         placeholder-class="keyword-placeholder"
-        maxlength="1"
       />
-      <view class="btn-primary" @click="generate" :class="{ 'btn--disabled': loading || !keyword }">
+      <view class="btn-primary" @click="generate()" :class="{ 'btn--disabled': loading || !keyword }">
         <text>{{ loading ? '翻检诗卷中…' : '生成 6 个名字' }}</text>
       </view>
-      <view v-if="names.length > 0" class="btn-secondary" @click="generate" :class="{ 'btn--disabled': loading }">
+      <view v-if="names.length > 0" class="btn-secondary" @click="generate()" :class="{ 'btn--disabled': loading }">
         <text>换一组</text>
       </view>
     </view>
@@ -56,8 +54,9 @@ const loading = ref(false)
 const detailName = ref(null)
 
 function onInput(e) {
-  const val = e.detail.value || ''
-  keyword.value = val.slice(0, 1)
+  const val = (e.detail.value || '').trim()
+  // 只取第一个字符作为偏好字；不回写 input 值，避免打断输入法组词
+  keyword.value = val ? val.slice(0, 1) : ''
 }
 
 async function generate() {

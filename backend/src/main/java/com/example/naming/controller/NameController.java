@@ -1,17 +1,16 @@
 package com.example.naming.controller;
 
+import com.example.naming.dto.BookStat;
 import com.example.naming.dto.GenerateRequest;
 import com.example.naming.dto.GenerateResponse;
 import com.example.naming.entity.NameRecord;
-import com.example.naming.repository.PoemRepository;
 import com.example.naming.service.DataImportService;
 import com.example.naming.service.NameService;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/name")
@@ -19,12 +18,10 @@ public class NameController {
 
     private final NameService nameService;
     private final DataImportService dataImportService;
-    private final PoemRepository poemRepository;
 
-    public NameController(NameService nameService, DataImportService dataImportService, PoemRepository poemRepository) {
+    public NameController(NameService nameService, DataImportService dataImportService) {
         this.nameService = nameService;
         this.dataImportService = dataImportService;
-        this.poemRepository = poemRepository;
     }
 
     @PostMapping("/random")
@@ -67,11 +64,7 @@ public class NameController {
     }
 
     @GetMapping("/stats")
-    public ResponseEntity<Map<String, Long>> stats() {
-        Map<String, Long> counts = new LinkedHashMap<>();
-        for (Object[] row : poemRepository.countBySource()) {
-            counts.put((String) row[0], (Long) row[1]);
-        }
-        return ResponseEntity.ok(counts);
+    public ResponseEntity<List<BookStat>> stats() {
+        return ResponseEntity.ok(nameService.getBookStats());
     }
 }

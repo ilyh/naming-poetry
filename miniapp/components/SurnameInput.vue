@@ -4,6 +4,9 @@
     <input
       :value="modelValue"
       @input="onInput($event)"
+      @compositionstart="composing = true"
+      @compositionend="onCompositionEnd($event)"
+      @blur="onBlur($event)"
       maxlength="4"
       placeholder="李"
       class="surname-field"
@@ -14,11 +17,29 @@
 </template>
 
 <script setup>
+import { ref } from 'vue'
+
 defineProps({ modelValue: { type: String, default: '' } })
 const emit = defineEmits(['update:modelValue'])
 
+const composing = ref(false)
+
+function normalize(value) {
+  return (value || '').replace(/\s/g, '').slice(0, 4)
+}
+
 function onInput(e) {
-  emit('update:modelValue', e.detail.value)
+  if (composing.value) return
+  emit('update:modelValue', normalize(e.detail.value))
+}
+
+function onCompositionEnd(e) {
+  composing.value = false
+  emit('update:modelValue', normalize(e.detail.value))
+}
+
+function onBlur(e) {
+  emit('update:modelValue', normalize(e.detail.value))
 }
 </script>
 

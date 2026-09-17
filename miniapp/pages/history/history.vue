@@ -6,13 +6,16 @@
     <view v-else-if="records.length === 0" class="empty-state">
       <text class="empty-text">暂无记录</text>
     </view>
-    <view v-else class="history-list">
+    <view v-else class="history-list paper-card">
       <view v-for="r in records" :key="r.id" class="history-item">
         <view class="history-name">
           <text class="history-surname">{{ r.surname }}</text>
           <text class="history-given">{{ r.givenName }}</text>
         </view>
-        <text class="history-mode">{{ r.mode === 'random' ? '随机' : r.mode === 'keyword' ? '关键词' : r.mode === 'theme' ? '主题' : r.mode }}</text>
+        <view class="history-meta">
+          <text class="history-mode">{{ modeLabel(r.mode) }}</text>
+          <text v-if="r.createdAt" class="history-time">{{ formatTime(r.createdAt) }}</text>
+        </view>
       </view>
       <view v-if="loadingMore" class="loading-more">
         <text class="loading-more-text">加载中...</text>
@@ -35,6 +38,19 @@ const loadingMore = ref(false)
 const page = ref(0)
 const hasMore = ref(true)
 const PAGE_SIZE = 20
+
+const MODE_LABELS = { random: '随机', keyword: '关键词', theme: '主题' }
+
+function modeLabel(mode) {
+  return MODE_LABELS[mode] || mode
+}
+
+function formatTime(value) {
+  const d = new Date(value)
+  if (Number.isNaN(d.getTime())) return ''
+  const pad = (n) => String(n).padStart(2, '0')
+  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())} ${pad(d.getHours())}:${pad(d.getMinutes())}`
+}
 
 async function loadFirst() {
   loading.value = true
@@ -80,11 +96,11 @@ onPullDownRefresh(async () => {
 loadFirst()
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .history-page {
   min-height: 100vh;
-  background: #FAF8F5;
-  padding: 24rpx;
+  background: $color-paper;
+  padding: $spacing-md $spacing-md calc(#{$spacing-md} + env(safe-area-inset-bottom));
 }
 
 .loading-state {
@@ -96,7 +112,7 @@ loadFirst()
 
 .loading-text {
   font-size: 28rpx;
-  color: #5C5C5C;
+  color: $color-warm-gray;
 }
 
 .empty-state {
@@ -108,20 +124,23 @@ loadFirst()
 
 .empty-text {
   font-size: 28rpx;
-  color: #A8A29E;
+  color: rgba($color-warm-gray, 0.75);
 }
 
 .history-list {
-  display: flex;
-  flex-direction: column;
+  padding: 0 $spacing-lg;
 }
 
 .history-item {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 24rpx 0;
-  border-bottom: 1px solid rgba(214, 211, 209, 0.3);
+  padding: $spacing-md 0;
+  border-bottom: 1px solid rgba($color-stone-300, 0.4);
+}
+
+.history-item:last-child {
+  border-bottom: none;
 }
 
 .history-name {
@@ -132,18 +151,32 @@ loadFirst()
 
 .history-surname {
   font-size: 28rpx;
-  color: #A8A29E;
+  color: rgba($color-warm-gray, 0.75);
 }
 
 .history-given {
   font-size: 28rpx;
   font-weight: 500;
-  color: #1A1A1A;
+  color: $color-warm-brown;
+}
+
+.history-meta {
+  display: flex;
+  align-items: center;
+  gap: $spacing-sm;
 }
 
 .history-mode {
   font-size: 22rpx;
-  color: #A8A29E;
+  color: $color-teal-warm;
+  background: $color-teal-mist;
+  padding: 4rpx $spacing-sm;
+  border-radius: $radius-full;
+}
+
+.history-time {
+  font-size: 22rpx;
+  color: rgba($color-warm-gray, 0.6);
 }
 
 .loading-more,
@@ -151,12 +184,12 @@ loadFirst()
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 32rpx 0;
+  padding: $spacing-lg 0;
 }
 
 .loading-more-text,
 .no-more-text {
   font-size: 24rpx;
-  color: #A8A29E;
+  color: rgba($color-warm-gray, 0.6);
 }
 </style>

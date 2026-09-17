@@ -1,5 +1,5 @@
 <template>
-  <view class="poem-card">
+  <view class="poem-card paper-card">
     <!-- 标题与作者 -->
     <view class="poem-header">
       <text class="poem-title">{{ poem.title }}</text>
@@ -55,24 +55,21 @@ const formattedNodes = computed(() => {
 })
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .poem-card {
-  background: #fbfaf7;
-  border-radius: 24rpx;
-  padding: 48rpx 40rpx;
-  box-shadow: 0 16rpx 64rpx rgba(0, 0, 0, 0.06), 0 4rpx 16rpx rgba(0, 0, 0, 0.03);
+  padding: $spacing-xl 40rpx;
 }
 
 .poem-header {
   text-align: center;
-  margin-bottom: 24rpx;
+  margin-bottom: $spacing-md;
 }
 
 .poem-title {
-  font-family: "STKaiti", "Kaiti SC", serif;
+  font-family: $font-kaiti;
   font-size: 44rpx;
   font-weight: 700;
-  color: #1A1A1A;
+  color: $color-warm-brown;
   letter-spacing: 4rpx;
   line-height: 1.4;
   display: block;
@@ -81,7 +78,7 @@ const formattedNodes = computed(() => {
 
 .poem-meta {
   font-size: 26rpx;
-  color: #888;
+  color: rgba($color-warm-gray, 0.75);
   letter-spacing: 2rpx;
 }
 
@@ -89,52 +86,35 @@ const formattedNodes = computed(() => {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 16rpx;
-  margin-bottom: 32rpx;
+  gap: $spacing-sm;
+  margin-bottom: $spacing-lg;
 }
 
 .poem-divider--end {
-  margin-top: 32rpx;
+  margin-top: $spacing-lg;
   margin-bottom: 0;
 }
 
 .poem-divider-line {
   width: 80rpx;
   height: 1px;
-  background: #D4D0CA;
+  background: $color-stone-300;
 }
 
 .poem-divider-dot {
   font-size: 22rpx;
-  color: #B0A89A;
+  color: $color-stone-400;
 }
 
 .poem-body {
-  font-family: "STKaiti", "Kaiti SC", "Songti SC", "SimSun", serif;
-  color: #2C2C2C;
-}
-
-.poem-body--shi {
+  font-family: $font-kaiti;
+  color: $color-ink;
   text-align: center;
 }
 
-.poem-body--shi .poem-line {
-  font-size: 32rpx;
-  line-height: 2.4;
-  letter-spacing: 8rpx;
+.poem-line {
   display: block;
-  white-space: nowrap;
-  overflow-x: auto;
-}
-
-.poem-body--ci {
-  text-align: center;
-}
-
-.poem-body--ci .poem-line {
-  display: inline-block;
-  text-align: left;
-  font-size: 30rpx;
+  font-size: 32rpx;
   line-height: 2.2;
   letter-spacing: 4rpx;
 }

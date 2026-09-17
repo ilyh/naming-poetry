@@ -5,7 +5,7 @@
     </view>
     <view v-else-if="error" class="error-state">
       <text class="error-text">{{ error }}</text>
-      <view class="btn-retry" @click="loadPoem()">
+      <view class="btn-retry" hover-class="hover-press" @click="loadPoem()">
         <text class="btn-retry-text">重试</text>
       </view>
     </view>
@@ -51,11 +51,11 @@ async function loadPoem() {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .poem-page {
   min-height: 100vh;
-  background: #FAF8F5;
-  padding: 24rpx;
+  background: $color-paper;
+  padding: $spacing-md $spacing-md calc(#{$spacing-md} + env(safe-area-inset-bottom));
 }
 
 .poem-container {
@@ -74,25 +74,25 @@ async function loadPoem() {
 
 .loading-text {
   font-size: 28rpx;
-  color: #5C5C5C;
+  color: $color-warm-gray;
 }
 
 .error-text {
   font-size: 28rpx;
-  color: #5C5C5C;
-  margin-bottom: 32rpx;
+  color: $color-warm-gray;
+  margin-bottom: $spacing-lg;
 }
 
 .btn-retry {
-  padding: 16rpx 48rpx;
-  border-radius: 9999rpx;
-  border: 1px solid rgba(17, 85, 79, 0.2);
+  padding: $spacing-sm $spacing-xl;
+  border-radius: $radius-full;
+  border: 1px solid rgba($color-teal-warm, 0.2);
   background: rgba(250, 248, 245, 0.8);
 }
 
 .btn-retry-text {
   font-size: 28rpx;
   font-weight: 700;
-  color: #11554F;
+  color: $color-teal-warm;
 }
 </style>

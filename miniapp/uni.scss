@@ -5,12 +5,15 @@ $color-paper: #FAF8F5;
 $color-cream: #FAF8F5;
 $color-cream-dark: #F3F0EB;
 $color-warm-brown: #1A1A1A;
+$color-ink: #2C2C2C;
 $color-warm-gray: #5C5C5C;
 $color-teal-warm: #11554F;
 $color-teal-light: #1A7A72;
+$color-teal-mist: #EEF5F4;
 $color-stone-100: #F5F5F4;
 $color-stone-300: #D6D3D1;
 $color-stone-400: #A8A29E;
+$color-border: rgba(0, 0, 0, 0.06);
 
 /* 间距 */
 $spacing-xs: 8rpx;
@@ -32,35 +35,3 @@ $font-kaiti: "STKaiti", "Kaiti SC", serif;
 
 /* 阴影 - 纸卡 */
 $shadow-card: 0 2rpx 4rpx rgba(0, 0, 0, 0.02), 0 8rpx 32rpx rgba(0, 0, 0, 0.03);
-
-/* 通用样式类 */
-.paper-card {
-  background: #FFFFFF;
-  border: 1px solid rgba(0, 0, 0, 0.06);
-  box-shadow: $shadow-card;
-  border-radius: $radius-lg;
-}
-
-.font-serif-name {
-  font-family: $font-serif;
-}
-
-.font-kaiti {
-  font-family: $font-kaiti;
-}
-
-/* 卡牌入场动画 */
-@keyframes card-rise {
-  from { opacity: 0; transform: translateY(12rpx); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-.card-enter {
-  animation: card-rise 420ms ease both;
-}
-
-/* 诗句中名字字符高亮 */
-.sentence-highlight {
-  color: #11554F;
-  font-weight: 600;
-}

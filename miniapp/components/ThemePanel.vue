@@ -7,16 +7,17 @@
         class="theme-tag"
         :class="{ 'theme-tag--active': selectedThemes.includes(theme) }"
         @click="toggleTheme(theme)"
+        hover-class="hover-press"
       >
         <text>{{ theme }}</text>
       </view>
     </view>
 
     <view class="panel-actions">
-      <view class="btn-primary" @click="generate()" :class="{ 'btn--disabled': loading || selectedThemes.length === 0 }">
+      <view class="btn-primary" hover-class="hover-press" @click="generate()" :class="{ 'btn--disabled': loading || selectedThemes.length === 0 }">
         <text>{{ loading ? '翻检诗卷中…' : '生成 6 个名字' }}</text>
       </view>
-      <view v-if="names.length > 0" class="btn-secondary" @click="generate()" :class="{ 'btn--disabled': loading }">
+      <view v-if="names.length > 0" class="btn-secondary" hover-class="hover-press" @click="generate()" :class="{ 'btn--disabled': loading }">
         <text>换一组</text>
       </view>
     </view>
@@ -88,19 +89,19 @@ async function generate() {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .theme-tags {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 16rpx;
-  margin-bottom: 24rpx;
+  gap: $spacing-sm;
+  margin-bottom: $spacing-md;
 }
 
 .theme-tag {
   padding: 12rpx 28rpx;
-  border-radius: 9999rpx;
-  border: 1px solid rgba(214, 211, 209, 0.4);
+  border-radius: $radius-full;
+  border: 1px solid rgba($color-stone-300, 0.6);
   background: rgba(250, 248, 245, 0.8);
   transition: background 0.2s, border-color 0.2s, color 0.2s;
 }
@@ -108,101 +109,15 @@ async function generate() {
 .theme-tag text {
   font-size: 26rpx;
   font-weight: 500;
-  color: #5C5C5C;
+  color: $color-warm-gray;
 }
 
 .theme-tag--active {
-  background: #11554F;
-  border-color: #11554F;
+  background: $color-teal-warm;
+  border-color: $color-teal-warm;
 }
 
 .theme-tag--active text {
   color: #FFFFFF;
-}
-
-.panel-actions {
-  display: flex;
-  justify-content: center;
-  gap: 24rpx;
-  margin-bottom: 32rpx;
-}
-
-.btn-primary {
-  padding: 20rpx 40rpx;
-  border-radius: 9999rpx;
-  background: #11554F;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.btn-primary text {
-  color: #FFFFFF;
-  font-size: 28rpx;
-  font-weight: 700;
-  letter-spacing: 4rpx;
-}
-
-.btn-secondary {
-  padding: 20rpx 40rpx;
-  border-radius: 9999rpx;
-  border: 1px solid rgba(17, 85, 79, 0.2);
-  background: rgba(250, 248, 245, 0.8);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.btn-secondary text {
-  color: #11554F;
-  font-size: 28rpx;
-  font-weight: 700;
-  letter-spacing: 4rpx;
-}
-
-.btn--disabled {
-  opacity: 0.6;
-  pointer-events: none;
-}
-
-.name-grid {
-  display: flex;
-  flex-direction: column;
-  gap: 24rpx;
-}
-
-.empty-state {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  min-height: 600rpx;
-  border-radius: 24rpx;
-  border: 2rpx dashed #D6D3D1;
-  background: #FAF8F5;
-  padding: 48rpx;
-}
-
-.empty-badge {
-  font-size: 22rpx;
-  font-weight: 700;
-  color: #5C5C5C;
-  letter-spacing: 6rpx;
-  margin-bottom: 12rpx;
-}
-
-.empty-title {
-  font-family: "Songti SC", "SimSun", serif;
-  font-size: 40rpx;
-  color: #1A1A1A;
-  margin-bottom: 16rpx;
-}
-
-.empty-desc {
-  font-size: 26rpx;
-  color: #5C5C5C;
-  text-align: center;
-  line-height: 1.6;
-  max-width: 520rpx;
 }
 </style>

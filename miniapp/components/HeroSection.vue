@@ -10,19 +10,19 @@
   </view>
 </template>
 
-<style scoped>
+<style lang="scss" scoped>
 .hero {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 40rpx 48rpx 24rpx;
+  padding: 40rpx $spacing-xl $spacing-md;
 }
 
 .hero-title {
-  font-family: "Songti SC", "SimSun", "Noto Serif SC", serif;
+  font-family: $font-serif;
   font-size: 56rpx;
   font-weight: 700;
-  color: #1A1A1A;
+  color: $color-warm-brown;
   letter-spacing: 10rpx;
   margin-bottom: 12rpx;
 }
@@ -37,18 +37,18 @@
 .hero-divider-line {
   width: 60rpx;
   height: 1px;
-  background: rgba(214, 211, 209, 0.8);
+  background: rgba($color-stone-300, 0.8);
 }
 
 .hero-divider-dot {
   margin: 0 10rpx;
   font-size: 20rpx;
-  color: #A8A29E;
+  color: $color-stone-400;
 }
 
 .hero-subtitle {
   font-size: 24rpx;
-  color: rgba(92, 92, 92, 0.7);
+  color: rgba($color-warm-gray, 0.75);
   letter-spacing: 3rpx;
 }
 </style>

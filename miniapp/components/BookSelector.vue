@@ -1,27 +1,28 @@
 <template>
   <view class="book-selector">
     <text class="section-label">典籍</text>
-    <label
-      v-for="book in books"
-      :key="book.value"
-      class="book-item"
-      :class="{ 'book-item--selected': selected.includes(book.value) }"
-    >
-      <checkbox
-        :value="book.value"
-        :checked="selected.includes(book.value)"
-        @change="toggle(book.value)"
-        class="book-checkbox"
-        color="#11554F"
-      />
-      <view class="book-info">
-        <view class="book-header">
-          <text class="book-name">{{ book.name }}</text>
-          <text class="book-count">{{ book.count }}首</text>
+    <checkbox-group class="book-list" @change="onBooksChange($event)">
+      <label
+        v-for="book in books"
+        :key="book.value"
+        class="book-item"
+        :class="{ 'book-item--selected': selected.includes(book.value) }"
+      >
+        <checkbox
+          :value="book.value"
+          :checked="selected.includes(book.value)"
+          class="book-checkbox"
+          color="#11554F"
+        />
+        <view class="book-info">
+          <view class="book-header">
+            <text class="book-name">{{ book.name }}</text>
+            <text class="book-count">{{ book.count }}首</text>
+          </view>
+          <text class="book-desc">{{ book.description }}</text>
         </view>
-        <text class="book-desc">{{ book.description }}</text>
-      </view>
-    </label>
+      </label>
+    </checkbox-group>
     <text class="book-hint">{{ selected.length === 0 ? '未选择时使用全部典籍' : '已选 ' + selected.length + ' 部' }}</text>
   </view>
 </template>
@@ -81,48 +82,53 @@ onMounted(async () => {
   }
 })
 
-function toggle(value) {
-  const arr = [...selected.value]
-  const idx = arr.indexOf(value)
-  if (idx >= 0) arr.splice(idx, 1)
-  else arr.push(value)
-  emit('update:modelValue', arr)
+function onBooksChange(e) {
+  const values = (e.detail && e.detail.value) || []
+  const known = books.value.map(b => b.value)
+  emit('update:modelValue', values.filter(v => known.includes(v)))
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .book-selector {
-  margin-bottom: 24rpx;
+  margin-bottom: $spacing-md;
 }
 
 .section-label {
   font-size: 24rpx;
   font-weight: 700;
-  color: #11554F;
+  color: $color-teal-warm;
   letter-spacing: 6rpx;
-  margin-bottom: 16rpx;
+  margin-bottom: $spacing-sm;
   display: block;
+}
+
+.book-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $spacing-sm;
 }
 
 .book-item {
   display: flex;
   align-items: flex-start;
-  padding: 16rpx 20rpx;
-  margin-bottom: 8rpx;
-  border-radius: 16rpx;
-  border: 1px solid #D6D3D1;
+  width: calc(50% - #{$spacing-sm} / 2);
+  box-sizing: border-box;
+  padding: $spacing-sm;
+  border-radius: $radius-md;
+  border: 1px solid $color-stone-300;
   background: #FFFFFF;
   transition: border-color 0.2s, background 0.2s;
 }
 
 .book-item--selected {
-  border-color: rgba(17, 85, 79, 0.3);
-  background: rgba(17, 85, 79, 0.04);
+  border-color: rgba($color-teal-warm, 0.3);
+  background: rgba($color-teal-warm, 0.04);
 }
 
 .book-checkbox {
   margin-top: 4rpx;
-  margin-right: 16rpx;
+  margin-right: 12rpx;
   flex-shrink: 0;
 }
 
@@ -134,31 +140,32 @@ function toggle(value) {
 .book-header {
   display: flex;
   align-items: baseline;
+  flex-wrap: wrap;
   gap: 8rpx;
 }
 
 .book-name {
   font-size: 28rpx;
   font-weight: 500;
-  color: #1A1A1A;
+  color: $color-warm-brown;
 }
 
 .book-count {
   font-size: 22rpx;
-  color: rgba(92, 92, 92, 0.5);
+  color: rgba($color-warm-gray, 0.75);
 }
 
 .book-desc {
   font-size: 22rpx;
-  color: rgba(92, 92, 92, 0.5);
+  color: rgba($color-warm-gray, 0.75);
   margin-top: 4rpx;
   line-height: 1.4;
 }
 
 .book-hint {
   font-size: 22rpx;
-  color: rgba(92, 92, 92, 0.4);
-  margin-top: 8rpx;
+  color: rgba($color-warm-gray, 0.6);
+  margin-top: $spacing-sm;
   display: block;
 }
 </style>

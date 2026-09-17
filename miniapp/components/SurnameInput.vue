@@ -22,17 +22,17 @@ function onInput(e) {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .surname-input {
   display: flex;
   align-items: center;
-  gap: 16rpx;
+  gap: $spacing-sm;
 }
 
 .surname-label {
   font-size: 28rpx;
   font-weight: 700;
-  color: #5C5C5C;
+  color: $color-warm-gray;
   letter-spacing: 4rpx;
   white-space: nowrap;
 }
@@ -41,17 +41,17 @@ function onInput(e) {
   width: 120rpx;
   text-align: center;
   font-size: 36rpx;
-  border-bottom: 4rpx solid rgba(17, 85, 79, 0.2);
+  border-bottom: 4rpx solid rgba($color-teal-warm, 0.2);
   padding: 8rpx 0;
-  color: #1A1A1A;
+  color: $color-warm-brown;
 }
 
 .surname-placeholder {
-  color: rgba(92, 92, 92, 0.4);
+  color: rgba($color-warm-gray, 0.5);
 }
 
 .surname-hint {
   font-size: 22rpx;
-  color: #5C5C5C;
+  color: rgba($color-warm-gray, 0.75);
 }
 </style>

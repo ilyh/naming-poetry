@@ -8,6 +8,7 @@
         class="length-btn"
         :class="{ 'length-btn--active': modelValue === n }"
         @click="$emit('update:modelValue', n)"
+        hover-class="hover-press"
       >
         <text>{{ n }}字</text>
       </view>
@@ -20,39 +21,39 @@ defineProps({ modelValue: { type: Number, default: 2 } })
 defineEmits(['update:modelValue'])
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .length-selector {
   display: flex;
   align-items: center;
-  gap: 16rpx;
+  gap: $spacing-sm;
 }
 
 .length-label {
   font-size: 28rpx;
   font-weight: 700;
-  color: #5C5C5C;
+  color: $color-warm-gray;
   letter-spacing: 4rpx;
 }
 
 .length-buttons {
   display: flex;
-  gap: 16rpx;
+  gap: $spacing-sm;
 }
 
 .length-btn {
-  padding: 12rpx 32rpx;
-  border-radius: 9999rpx;
+  padding: 12rpx $spacing-lg;
+  border-radius: $radius-full;
   font-size: 28rpx;
   font-weight: 500;
-  color: #5C5C5C;
-  border: 1px solid rgba(214, 211, 209, 0.4);
+  color: $color-warm-gray;
+  border: 1px solid rgba($color-stone-300, 0.6);
   background: rgba(250, 248, 245, 0.8);
   transition: background 0.2s, color 0.2s, border-color 0.2s;
 }
 
 .length-btn--active {
-  background: #11554F;
+  background: $color-teal-warm;
   color: #FFFFFF;
-  border-color: #11554F;
+  border-color: $color-teal-warm;
 }
 </style>

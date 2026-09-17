@@ -1,9 +1,10 @@
 <template>
   <view class="navbar">
     <view class="navbar-content">
-      <text class="navbar-title">古诗文起名</text>
       <view class="navbar-right">
-        <text class="navbar-link" @click="goHistory()">历史记录</text>
+        <view class="navbar-link" hover-class="hover-press" @click="goHistory()">
+          <text>历史记录</text>
+        </view>
       </view>
     </view>
   </view>
@@ -17,7 +18,7 @@ function goHistory() {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .navbar {
   position: fixed;
   top: 0;
@@ -25,23 +26,16 @@ function goHistory() {
   right: 0;
   z-index: 100;
   padding-top: env(safe-area-inset-top);
-  background: #FAF8F5;
-  border-bottom: 1px solid #D6D3D1;
+  background: $color-paper;
+  border-bottom: 1px solid $color-stone-300;
 }
 
 .navbar-content {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  padding: 24rpx 32rpx;
-}
-
-.navbar-title {
-  font-family: "Songti SC", "SimSun", serif;
-  font-size: 36rpx;
-  font-weight: 700;
-  letter-spacing: 8rpx;
-  color: #1A1A1A;
+  justify-content: flex-end;
+  height: 88rpx;
+  padding: 0 $spacing-lg;
 }
 
 .navbar-right {
@@ -50,8 +44,12 @@ function goHistory() {
 }
 
 .navbar-link {
-  font-size: 28rpx;
-  color: #5C5C5C;
+  font-size: 26rpx;
+  color: $color-teal-warm;
+  padding: 8rpx $spacing-md;
+  border: 1px solid rgba($color-teal-warm, 0.25);
+  border-radius: $radius-full;
+  background: rgba(250, 248, 245, 0.8);
 }
 
 .navbar-placeholder {

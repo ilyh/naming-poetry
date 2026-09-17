@@ -1,7 +1,7 @@
 <template>
-  <view class="paper-card name-card card-enter" :style="{ animationDelay: (index || 0) * 55 + 'ms' }" @click="emit('detail', name)">
+  <view class="paper-card name-card card-enter" :style="{ animationDelay: (index || 0) * 55 + 'ms' }">
     <view class="name-header">
-      <view class="name-title-group">
+      <view class="name-title-group" @click="emit('detail', name)">
         <text class="name-badge">候选 {{ String(index + 1).padStart(2, '0') }}</text>
         <view class="name-display">
           <text class="name-surname">{{ name.surname }}</text>
@@ -14,16 +14,16 @@
           </template>
         </view>
       </view>
-      <view class="copy-btn" @click.stop="copyName">
+      <view class="copy-btn" hover-class="hover-press" @click="copyName()">
         <text class="copy-btn-text">{{ copied ? '已复制' : '复制' }}</text>
       </view>
     </view>
 
-    <view class="name-sentence">
+    <view class="name-sentence" @click="emit('detail', name)">
       <rich-text class="name-sentence-text" :nodes="highlightedNodes"></rich-text>
     </view>
 
-    <view class="name-footer" @click.stop="openPoem">
+    <view class="name-footer" hover-class="hover-surface" @click="openPoem()">
       <text class="name-source">出处：{{ name.sourceNote || (name.sources?.[0] || '未知') }}</text>
     </view>
   </view>
@@ -77,17 +77,16 @@ onUnmounted(() => {
 })
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .name-card {
-  padding: 32rpx;
-  border-radius: 24rpx;
+  padding: $spacing-lg;
 }
 
 .name-header {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
-  margin-bottom: 16rpx;
+  margin-bottom: $spacing-sm;
 }
 
 .name-title-group {
@@ -98,24 +97,25 @@ onUnmounted(() => {
 .name-badge {
   font-size: 22rpx;
   font-weight: 700;
-  color: #5C5C5C;
+  color: $color-warm-gray;
   letter-spacing: 6rpx;
   display: block;
-  margin-bottom: 8rpx;
+  margin-bottom: $spacing-xs;
 }
 
 .name-display {
   display: flex;
   align-items: flex-end;
+  flex-wrap: wrap;
   gap: 4rpx;
 }
 
 .name-surname {
   font-size: 52rpx;
-  font-family: "Songti SC", "SimSun", serif;
-  color: #1A1A1A;
+  font-family: $font-serif;
+  color: $color-warm-brown;
   line-height: 1.2;
-  margin-right: 8rpx;
+  margin-right: $spacing-xs;
 }
 
 .name-char-group {
@@ -126,22 +126,22 @@ onUnmounted(() => {
 
 .name-char-pinyin {
   font-size: 20rpx;
-  color: #5C5C5C;
+  color: $color-warm-gray;
   line-height: 1;
   margin-bottom: 2rpx;
 }
 
 .name-char-text {
   font-size: 52rpx;
-  font-family: "Songti SC", "SimSun", serif;
-  color: #11554F;
+  font-family: $font-serif;
+  color: $color-teal-warm;
   line-height: 1.2;
 }
 
 .copy-btn {
-  padding: 12rpx 24rpx;
-  border-radius: 9999rpx;
-  border: 1px solid rgba(17, 85, 79, 0.2);
+  padding: 12rpx $spacing-md;
+  border-radius: $radius-full;
+  border: 1px solid rgba($color-teal-warm, 0.2);
   background: rgba(250, 248, 245, 0.8);
   flex-shrink: 0;
   transition: background 0.2s, border-color 0.2s;
@@ -150,26 +150,26 @@ onUnmounted(() => {
 .copy-btn-text {
   font-size: 24rpx;
   font-weight: 700;
-  color: #11554F;
+  color: $color-teal-warm;
 }
 
 .name-sentence {
-  margin-bottom: 16rpx;
+  margin-bottom: $spacing-sm;
 }
 
 .name-sentence-text {
   font-size: 30rpx;
-  color: #1A1A1A;
+  color: $color-warm-brown;
   line-height: 1.8;
 }
 
 .name-footer {
-  padding-top: 16rpx;
-  border-top: 1px solid rgba(214, 211, 209, 0.4);
+  padding-top: $spacing-sm;
+  border-top: 1px solid rgba($color-stone-300, 0.4);
 }
 
 .name-source {
   font-size: 24rpx;
-  color: #5C5C5C;
+  color: $color-warm-gray;
 }
 </style>

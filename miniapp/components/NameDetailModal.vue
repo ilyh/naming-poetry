@@ -1,6 +1,7 @@
 <template>
-  <view class="modal-overlay" @click="emit('close')">
-    <view class="modal-panel" @click.stop>
+  <view class="modal-overlay">
+    <view class="modal-mask" @click="emit('close')" />
+    <view class="modal-panel">
       <view class="modal-header">
         <text class="modal-name">{{ name.surname }}<text class="modal-given">{{ name.givenName }}</text></text>
       </view>
@@ -21,7 +22,7 @@
         </view>
       </view>
 
-      <view class="btn-close" @click="emit('close')">
+      <view class="btn-close" hover-class="hover-press" @click="emit('close')">
         <text class="btn-close-text">关闭</text>
       </view>
     </view>
@@ -44,86 +45,110 @@ const highlightedNodes = computed(() => {
 })
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .modal-overlay {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.4);
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 200;
-  padding: 48rpx;
+  padding: $spacing-xl $spacing-xl calc(#{$spacing-xl} + env(safe-area-inset-bottom));
+  animation: modal-fade 200ms ease both;
+}
+
+@keyframes modal-fade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.modal-mask {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.4);
 }
 
 .modal-panel {
-  background: #FAF8F5;
-  border-radius: 24rpx;
-  padding: 48rpx;
+  position: relative;
+  z-index: 1;
+  background: $color-paper;
+  border-radius: $radius-lg;
+  padding: $spacing-xl;
   width: 100%;
   max-width: 600rpx;
+  max-height: 80vh;
+  overflow-y: auto;
   box-shadow: 0 16rpx 64rpx rgba(0, 0, 0, 0.1);
+  animation: modal-rise 240ms ease both;
+}
+
+@keyframes modal-rise {
+  from { opacity: 0; transform: translateY(24rpx) scale(0.96); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
 }
 
 .modal-header {
-  margin-bottom: 32rpx;
+  margin-bottom: $spacing-lg;
 }
 
 .modal-name {
-  font-family: "Songti SC", "SimSun", serif;
+  font-family: $font-serif;
   font-size: 56rpx;
-  color: #1A1A1A;
+  color: $color-warm-brown;
 }
 
 .modal-given {
-  color: #11554F;
+  color: $color-teal-warm;
 }
 
 .modal-source-box {
-  background: #F8F6F2;
+  background: $color-cream-dark;
   border: 1px solid rgba(0, 0, 0, 0.05);
-  border-radius: 16rpx;
-  padding: 24rpx;
-  margin-bottom: 24rpx;
+  border-radius: $radius-md;
+  padding: $spacing-md;
+  margin-bottom: $spacing-md;
 }
 
 .modal-source-label {
   font-size: 26rpx;
-  color: #5C5C5C;
+  color: $color-warm-gray;
   font-weight: 500;
   display: block;
-  margin-bottom: 8rpx;
+  margin-bottom: $spacing-xs;
 }
 
 .modal-source-text {
   font-size: 30rpx;
-  color: #1A1A1A;
+  color: $color-warm-brown;
   line-height: 1.8;
 }
 
 .modal-source-note {
   font-size: 22rpx;
-  color: #5C5C5C;
-  margin-top: 16rpx;
-  padding-top: 16rpx;
-  border-top: 1px solid rgba(214, 211, 209, 0.3);
+  color: $color-warm-gray;
+  margin-top: $spacing-sm;
+  padding-top: $spacing-sm;
+  border-top: 1px solid rgba($color-stone-300, 0.4);
   display: block;
 }
 
 .modal-char-row {
   display: flex;
-  gap: 16rpx;
-  margin-bottom: 32rpx;
+  gap: $spacing-sm;
+  margin-bottom: $spacing-lg;
 }
 
 .modal-char-circle {
   width: 80rpx;
   height: 80rpx;
   border-radius: 50%;
-  background: #EEF5F4;
+  background: $color-teal-mist;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -131,16 +156,16 @@ const highlightedNodes = computed(() => {
 
 .modal-char-text {
   font-size: 40rpx;
-  font-family: "Songti SC", "SimSun", serif;
+  font-family: $font-serif;
   font-weight: 700;
-  color: #11554F;
+  color: $color-teal-warm;
 }
 
 .btn-close {
   width: 100%;
-  padding: 24rpx 0;
-  border-radius: 9999rpx;
-  border: 1px solid rgba(17, 85, 79, 0.2);
+  padding: $spacing-md 0;
+  border-radius: $radius-full;
+  border: 1px solid rgba($color-teal-warm, 0.2);
   background: rgba(250, 248, 245, 0.8);
   display: flex;
   align-items: center;
@@ -150,6 +175,6 @@ const highlightedNodes = computed(() => {
 .btn-close-text {
   font-size: 28rpx;
   font-weight: 700;
-  color: #11554F;
+  color: $color-teal-warm;
 }
 </style>

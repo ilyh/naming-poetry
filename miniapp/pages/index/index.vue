@@ -68,29 +68,29 @@ const activeTab = ref('random')
 const selectedSources = ref([])
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .home-page {
-  padding: 0 24rpx;
+  padding: 0 $spacing-md;
 }
 
 .settings-panel {
-  padding: 32rpx;
-  margin-bottom: 24rpx;
+  padding: $spacing-lg;
+  margin-bottom: $spacing-md;
 }
 
 .settings-title {
-  font-family: "Songti SC", "SimSun", serif;
+  font-family: $font-serif;
   font-size: 36rpx;
-  color: #1A1A1A;
+  color: $color-warm-brown;
   display: block;
   margin-bottom: 4rpx;
 }
 
 .settings-desc {
   font-size: 26rpx;
-  color: rgba(92, 92, 92, 0.6);
+  color: rgba($color-warm-gray, 0.75);
   display: block;
-  margin-bottom: 32rpx;
+  margin-bottom: $spacing-lg;
 }
 
 .settings-section {
@@ -99,8 +99,8 @@ const selectedSources = ref([])
 
 .settings-divider {
   height: 1px;
-  background: rgba(214, 211, 209, 0.5);
-  margin: 32rpx 0;
+  background: rgba($color-stone-300, 0.5);
+  margin: $spacing-lg 0;
 }
 
 .settings-controls {
@@ -110,19 +110,19 @@ const selectedSources = ref([])
 }
 
 .names-panel {
-  padding: 32rpx;
+  padding: $spacing-lg;
   min-height: 400rpx;
 }
 
 .names-title {
-  font-family: "Songti SC", "SimSun", serif;
+  font-family: $font-serif;
   font-size: 36rpx;
-  color: #1A1A1A;
+  color: $color-warm-brown;
   display: block;
-  margin-bottom: 32rpx;
+  margin-bottom: $spacing-lg;
 }
 
 .bottom-spacer {
-  height: 48rpx;
+  height: calc(#{$spacing-xl} + env(safe-area-inset-bottom));
 }
 </style>

@@ -19,6 +19,7 @@
     "@dcloudio/vite-plugin-uni": "3.0.0-alpha-1000920260615733",
     "cross-env": "^7.0.3",
     "miniprogram-automator": "^0.12.1",
+    "sass": "^1.104.1",
     "vite": "7.3.3"
   }
 }

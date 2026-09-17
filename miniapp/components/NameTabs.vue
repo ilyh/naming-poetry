@@ -6,6 +6,7 @@
       class="tab-item"
       :class="{ 'tab-item--active': modelValue === tab.key }"
       @click="$emit('update:modelValue', tab.key)"
+      hover-class="hover-press"
     >
       <text>{{ tab.label }}</text>
     </view>
@@ -23,10 +24,10 @@ const tabs = [
 ]
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .name-tabs {
   display: flex;
-  border-bottom: 2rpx solid rgba(214, 211, 209, 0.3);
+  border-bottom: 2rpx solid rgba($color-stone-300, 0.5);
 }
 
 .tab-item {
@@ -36,14 +37,14 @@ const tabs = [
   font-size: 28rpx;
   font-weight: 500;
   letter-spacing: 4rpx;
-  color: #5C5C5C;
+  color: $color-warm-gray;
   border-bottom: 4rpx solid transparent;
   margin-bottom: -2rpx;
   transition: color 0.2s, border-bottom-color 0.2s;
 }
 
 .tab-item--active {
-  color: #11554F;
-  border-bottom-color: #11554F;
+  color: $color-teal-warm;
+  border-bottom-color: $color-teal-warm;
 }
 </style>

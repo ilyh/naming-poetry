@@ -1,0 +1,4 @@
+# 统一以 LF 存入仓库。
+# 否则 Windows 工作区的 CRLF 会让 git status 长期把大量文件显示为「已修改」，
+# 实际内容却与 HEAD 完全一致（纯行尾噪音）。
+* text=auto eol=lf

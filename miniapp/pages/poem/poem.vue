@@ -15,6 +15,26 @@
   </view>
 </template>
 
+<script>
+// 微信小程序要求页面声明 onShareAppMessage，右上角「转发」才可用
+export default {
+  onShareAppMessage() {
+    return { title: '古诗文起名 · 从千年诗词中，觅一个好名', path: sharePath() }
+  },
+  onShareTimeline() {
+    return { title: '古诗文起名 · 从千年诗词中，觅一个好名' }
+  }
+}
+
+// 不带 id 分享出去，好友打开只会看到「缺少诗词ID」
+function sharePath() {
+  const pages = getCurrentPages()
+  const current = pages[pages.length - 1]
+  const id = current && current.options && current.options.id
+  return id ? `/pages/poem/poem?id=${id}` : '/pages/index/index'
+}
+</script>
+
 <script setup>
 import { ref } from 'vue'
 import { onLoad } from '@dcloudio/uni-app'

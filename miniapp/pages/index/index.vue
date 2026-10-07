@@ -1,6 +1,5 @@
 <template>
   <view class="home-page">
-    <NavBar />
     <HeroSection />
 
     <!-- 设置面板 -->
@@ -23,23 +22,26 @@
 
     <!-- 名字展示区 -->
     <view class="names-panel paper-card">
-      <text class="names-title">候选名字</text>
+      <view class="names-heading">
+        <text class="names-title">候选名字</text>
+        <NavBar />
+      </view>
 
       <RandomPanel
         v-show="activeTab === 'random'"
-        :surname="surname"
+        :surname="normalizedSurname"
         :length="nameLength"
         :sources="selectedSources"
       />
       <KeywordPanel
         v-show="activeTab === 'keyword'"
-        :surname="surname"
+        :surname="normalizedSurname"
         :length="nameLength"
         :sources="selectedSources"
       />
       <ThemePanel
         v-show="activeTab === 'theme'"
-        :surname="surname"
+        :surname="normalizedSurname"
         :length="nameLength"
         :sources="selectedSources"
       />
@@ -50,8 +52,21 @@
   </view>
 </template>
 
+<script>
+// 微信小程序要求页面声明 onShareAppMessage，右上角「转发」才可用
+export default {
+  onShareAppMessage() {
+    return { title: '古诗文起名 · 从千年诗词中，觅一个好名', path: '/pages/index/index' }
+  },
+  onShareTimeline() {
+    return { title: '古诗文起名 · 从千年诗词中，觅一个好名' }
+  }
+}
+</script>
+
 <script setup>
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
+import { normalizeSurname } from '../../composables/useSurname'
 import NavBar from '../../components/NavBar.vue'
 import HeroSection from '../../components/HeroSection.vue'
 import BookSelector from '../../components/BookSelector.vue'
@@ -63,6 +78,8 @@ import KeywordPanel from '../../components/KeywordPanel.vue'
 import ThemePanel from '../../components/ThemePanel.vue'
 
 const surname = ref('李')
+// 兜底：姓氏还没 blur 就直接点「生成」时，保证下发给面板的值已归一化
+const normalizedSurname = computed(() => normalizeSurname(surname.value))
 const nameLength = ref(2)
 const activeTab = ref('random')
 const selectedSources = ref([])
@@ -114,12 +131,19 @@ const selectedSources = ref([])
   min-height: 400rpx;
 }
 
+.names-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: $spacing-md;
+  margin-bottom: $spacing-lg;
+}
+
 .names-title {
   font-family: $font-serif;
   font-size: 36rpx;
   color: $color-warm-brown;
   display: block;
-  margin-bottom: $spacing-lg;
 }
 
 .bottom-spacer {

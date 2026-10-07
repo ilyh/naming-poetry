@@ -5,7 +5,6 @@
       :value="modelValue"
       @input="onInput($event)"
       @blur="onBlur($event)"
-      maxlength="4"
       placeholder="李"
       class="surname-field"
       placeholder-class="surname-placeholder"
@@ -15,19 +14,18 @@
 </template>
 
 <script setup>
+import { normalizeSurname } from '../composables/useSurname'
+
 defineProps({ modelValue: { type: String, default: '' } })
 const emit = defineEmits(['update:modelValue'])
 
-function normalize(value) {
-  return (value || '').replace(/\s/g, '').slice(0, 4)
-}
-
 function onInput(e) {
-  emit('update:modelValue', normalize(e.detail.value))
+  // 保留输入法正在组合的完整拼音，避免 iOS 上过早截断导致无法选字。
+  emit('update:modelValue', e.detail.value)
 }
 
 function onBlur(e) {
-  emit('update:modelValue', normalize(e.detail.value))
+  emit('update:modelValue', normalizeSurname(e.detail.value))
 }
 </script>
 

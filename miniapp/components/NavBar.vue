@@ -1,58 +1,76 @@
 <template>
-  <view class="navbar">
-    <view class="navbar-content">
-      <view class="navbar-right">
-        <view class="navbar-link" hover-class="hover-press" @click="goHistory()">
-          <text>历史记录</text>
+  <view class="history-menu">
+    <view class="history-menu-content">
+      <navigator
+        class="history-button"
+        url="/pages/history/history"
+        open-type="navigate"
+        hover-class="hover-press"
+      >
+        <view class="history-clock-icon" aria-hidden="true">
+          <view class="history-clock-hour" />
+          <view class="history-clock-minute" />
         </view>
-      </view>
+        <text>历史记录</text>
+      </navigator>
     </view>
   </view>
-  <!-- 占位高度，防止内容被状态栏遮挡 -->
-  <view class="navbar-placeholder" />
 </template>
 
-<script setup>
-function goHistory() {
-  uni.navigateTo({ url: '/pages/history/history' })
-}
-</script>
-
 <style lang="scss" scoped>
-.navbar {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 100;
-  padding-top: env(safe-area-inset-top);
-  background: $color-paper;
-  border-bottom: 1px solid $color-stone-300;
+.history-menu {
+  position: relative;
+  z-index: 10;
+  flex: none;
 }
 
-.navbar-content {
+.history-menu-content {
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  height: 88rpx;
-  padding: 0 $spacing-lg;
+  padding: 0;
 }
 
-.navbar-right {
+.history-button {
   display: flex;
   align-items: center;
-}
-
-.navbar-link {
+  gap: 14rpx;
   font-size: 26rpx;
   color: $color-teal-warm;
-  padding: 8rpx $spacing-md;
+  padding: 14rpx $spacing-md;
   border: 1px solid rgba($color-teal-warm, 0.25);
   border-radius: $radius-full;
   background: rgba(250, 248, 245, 0.8);
 }
 
-.navbar-placeholder {
-  height: calc(88rpx + env(safe-area-inset-top));
+.history-clock-icon {
+  position: relative;
+  flex: none;
+  width: 32rpx;
+  height: 32rpx;
+  border: 2rpx solid $color-teal-warm;
+  border-radius: 50%;
 }
+
+.history-clock-hour,
+.history-clock-minute {
+  position: absolute;
+  border-radius: 2rpx;
+  background: $color-teal-warm;
+}
+
+.history-clock-hour {
+  top: 6rpx;
+  left: 15rpx;
+  width: 2rpx;
+  height: 10rpx;
+}
+
+.history-clock-minute {
+  top: 15rpx;
+  left: 15rpx;
+  width: 8rpx;
+  height: 2rpx;
+}
+
 </style>

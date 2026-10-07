@@ -1,13 +1,88 @@
 <!doctype html>
-<html lang="en">
+<html lang="zh-CN">
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>frontend</title>
+    <meta
+      name="description"
+      content="小蝉猫古诗文起名工具，支持按姓氏、名字长度、主题及《诗经》《楚辞》、唐诗宋词等典籍筛选名字，并查看诗句出处。从经典文本中寻找有来历、有寓意的名字灵感。"
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="古诗文起名工具｜从诗词典籍中为宝宝甄选有出处的好名字 - 小蝉猫" />
+    <meta
+      property="og:description"
+      content="按姓氏、名字长度、主题和诗词典籍筛选候选名字，了解名字背后的诗句出处。"
+    />
+    <title>古诗文起名工具｜从诗词典籍中为宝宝甄选有出处的好名字 - 小蝉猫</title>
   </head>
-  <body>
+  <body class="min-h-screen bg-paper">
+    <header class="py-5 px-8 flex items-center justify-between border-b border-stone-300">
+      <a href="/" class="text-lg font-serif-name font-bold tracking-wider text-warm-brown hover:text-warm-brown/70 transition">
+        古诗文起名
+      </a>
+      <nav class="flex items-center gap-6" aria-label="主导航">
+        <a href="/demo/poem" class="text-sm text-warm-gray hover:text-warm-brown transition">诗词示例</a>
+        <a href="/admin" class="text-sm text-warm-gray hover:text-warm-brown transition">管理</a>
+        <button
+          id="toggle-history"
+          type="button"
+          class="text-sm text-warm-gray hover:text-warm-brown transition"
+        >历史记录</button>
+      </nav>
+    </header>
+
+    <section data-home-only class="text-center py-12 px-6" aria-labelledby="home-title">
+      <h1 id="home-title" class="font-serif-name text-4xl md:text-5xl text-warm-brown tracking-wider mb-4">
+        古诗文起名
+      </h1>
+      <div class="flex items-center justify-center gap-3 mb-3" aria-hidden="true">
+        <span class="w-12 h-px bg-stone-300"></span>
+        <span class="text-stone-400 text-sm">◇</span>
+        <span class="w-12 h-px bg-stone-300"></span>
+      </div>
+      <p class="text-warm-gray text-base md:text-lg tracking-wide">「从千年诗词中，觅一个好名」</p>
+      <p class="max-w-3xl mx-auto mt-4 text-sm md:text-base leading-7 text-warm-gray">
+        从《诗经》《楚辞》、唐诗宋词等典籍中寻找名字灵感。选择姓氏、名字长度与取名方式，生成候选名字并查看对应诗句出处。
+      </p>
+      <div class="flex flex-wrap justify-center gap-5 mt-5 text-sm">
+        <a href="#naming-tool" class="text-teal-warm underline underline-offset-4">开始起名</a>
+        <a href="/demo/poem" class="text-teal-warm underline underline-offset-4">查看诗词排版示例</a>
+      </div>
+    </section>
+
     <div id="app"></div>
+
+    <section
+      data-home-only
+      class="max-w-4xl mx-auto px-6 py-12 space-y-8 text-warm-gray leading-8"
+      aria-label="古诗文起名说明"
+    >
+      <div>
+        <h2 class="font-serif-name text-2xl text-warm-brown mb-3">从古典诗文中寻找名字灵感</h2>
+        <p>
+          好名字可以从诗句的意象、音韵和寓意中获得灵感。工具收录《诗经》《楚辞》、唐诗、宋词、乐府诗集、古诗、辞赋及纳兰词等典籍，可按来源筛选；候选结果会展示相关诗句，方便继续了解名字的出处与语境。
+        </p>
+      </div>
+      <div>
+        <h2 class="font-serif-name text-2xl text-warm-brown mb-3">怎样使用起名工具</h2>
+        <p>
+          先填写姓氏并选择名字长度，再按随机灵感、关键词或主题生成候选名字。可以调整典籍范围，比较不同诗句中的用字和意境；看到喜欢的结果后，可查看出处并复制名字。
+        </p>
+      </div>
+      <div>
+        <h2 class="font-serif-name text-2xl text-warm-brown mb-3">继续阅读诗词示例</h2>
+        <p>
+          了解诗歌与词作的排版和出处展示方式：
+          <a href="/demo/poem" class="text-teal-warm underline underline-offset-4">查看《关雎》《水调歌头·明月几时有》示例</a>。
+        </p>
+      </div>
+    </section>
+
+    <footer class="text-center py-6 text-xs text-warm-gray/50">
+      <a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener noreferrer" class="hover:text-warm-gray/70 transition-colors">鲁ICP备2026025186号</a>
+    </footer>
+
     <script type="module" src="/src/main.js"></script>
   </body>
 </html>

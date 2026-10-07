@@ -16,11 +16,16 @@
 
 ### 方法2：通过API热加载
 ```bash
+# 登录获取管理令牌（令牌有效期为 8 小时）
+TOKEN=$(curl -s -X POST http://localhost:8080/api/admin/auth \
+  -H 'Content-Type: application/json' \
+  -d "{\"password\":\"${ADMIN_PASSWORD}\"}" | python3 -c 'import json,sys; print(json.load(sys.stdin)["token"])')
+
 # 获取当前黑名单
-curl http://localhost:8080/api/admin/blacklist
+curl -H "X-Admin-Token: ${TOKEN}" http://localhost:8080/api/admin/blacklist
 
 # 重新加载黑名单配置
-curl -X POST http://localhost:8080/api/admin/blacklist/reload
+curl -X POST -H "X-Admin-Token: ${TOKEN}" http://localhost:8080/api/admin/blacklist/reload
 ```
 
 ### 方法3：命令行工具
@@ -34,4 +39,10 @@ java -jar naming-poetry.jar --update-blacklist
 2. 不需要空格
 3. 系统会自动过滤空值
 4. 修改后需要调用热加载接口才生效
-5. 热加载接口需要管理员权限
+5. 管理页面和管理接口均需要管理员权限
+6. 启动后端前请设置环境变量 `ADMIN_PASSWORD` 作为管理密码；未配置时管理功能会拒绝访问
+
+```bash
+export ADMIN_PASSWORD='请替换为自己的管理密码'
+java -jar backend/target/naming-poetry-0.0.1-SNAPSHOT.jar
+```

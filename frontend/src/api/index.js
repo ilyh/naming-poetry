@@ -10,15 +10,33 @@ function getSessionId() {
 }
 
 const api = axios.create({ baseURL: '/api' })
+const ADMIN_TOKEN_KEY = 'adminToken'
+
+function isAdminRequest(url = '') {
+  return url.startsWith('/admin/') || url.startsWith('/name/admin/')
+}
 
 api.interceptors.request.use(config => {
   const sessionId = getSessionId()
+  if (isAdminRequest(config.url) && config.url !== '/admin/auth') {
+    const token = sessionStorage.getItem(ADMIN_TOKEN_KEY)
+    if (token) config.headers['X-Admin-Token'] = token
+  }
   if (config.method === 'post' && config.data) {
     config.data.sessionId = sessionId
   } else if (config.method === 'get') {
     config.params = { ...config.params, sessionId }
   }
   return config
+})
+
+api.interceptors.response.use(response => response, error => {
+  const url = error.config?.url || ''
+  if (error.response?.status === 401 && isAdminRequest(url) && url !== '/admin/auth') {
+    sessionStorage.removeItem(ADMIN_TOKEN_KEY)
+    window.dispatchEvent(new Event('admin-session-expired'))
+  }
+  return Promise.reject(error)
 })
 
 export function generateRandom(params) {
@@ -39,6 +57,18 @@ export function getHistory(page = 0, size = 20) {
 
 export function getStats() {
   return api.get('/name/stats')
+}
+
+export function loginAdmin(password) {
+  return api.post('/admin/auth', { password })
+}
+
+export function verifyAdminSession() {
+  return api.get('/admin/session')
+}
+
+export function logoutAdmin() {
+  return api.post('/admin/logout')
 }
 
 export function getBlacklist() {

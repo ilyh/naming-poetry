@@ -13,7 +13,7 @@
     <div class="flex items-center justify-between mt-3 mb-5">
       <span class="text-sm text-warm-gray">词组数：<b class="text-teal-warm">{{ phraseCount }}</b></span>
       <button
-        @click="save"
+        @click="save()"
         :disabled="loading || !localPhrases.trim()"
         class="px-4 py-2 rounded-lg text-sm font-bold text-white transition"
         :class="loading || !localPhrases.trim() ? 'bg-stone-400 cursor-not-allowed' : 'bg-teal-warm hover:bg-teal-light'"
@@ -87,11 +87,17 @@ async function load() {
 async function save(next) {
   loading.value = true
   try {
-    await updatePhraseBlacklist(next != null ? next : localPhrases.value)
+    const res = await updatePhraseBlacklist(next != null ? next : localPhrases.value)
+    // 后端写文件失败时返回的是 HTTP 200 + status:"error"，
+    // 只看 HTTP 状态会把失败当成功报出去
+    if (res.data?.status === 'error') {
+      props.toast(res.data.message || '保存失败，请重试')
+      return
+    }
     await load()
     props.toast('词组黑名单已热更新')
-  } catch {
-    props.toast('保存失败，请重试')
+  } catch (e) {
+    props.toast(e.response?.data?.message || '保存失败，请重试')
   } finally {
     loading.value = false
   }

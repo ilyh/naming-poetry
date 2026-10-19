@@ -38,6 +38,8 @@
       </section>
     </div>
   </main>
+
+  <MiniProgramPromo />
 </template>
 
 <script setup>
@@ -49,6 +51,7 @@ import NameTabs from '../components/NameTabs.vue'
 import RandomPanel from '../components/RandomPanel.vue'
 import KeywordPanel from '../components/KeywordPanel.vue'
 import ThemePanel from '../components/ThemePanel.vue'
+import MiniProgramPromo from '../components/MiniProgramPromo.vue'
 
 const surname = ref('李')
 const nameLength = ref(2)

@@ -18,7 +18,7 @@
             把取名灵感，带进微信
           </h2>
           <p class="mt-3 max-w-xl text-sm leading-7 text-warm-gray md:text-base">
-            打开微信搜索「古诗文起名」，随时继续挑选有出处的好名字，让诗词灵感陪你走得更远。
+            打开微信搜索「诗语择名」，随时继续挑选有出处的好名字，让诗词灵感陪你走得更远。
           </p>
 
           <div class="mt-5 flex flex-wrap items-center gap-3">
@@ -44,14 +44,22 @@
         </div>
 
         <div class="relative rounded-xl border border-teal-warm/10 bg-white/75 px-5 py-6 text-center">
-          <div class="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-teal-warm text-white shadow-sm">
+          <div v-if="miniProgramCodeUrl && !codeLoadFailed" class="mx-auto h-32 w-32 rounded-xl bg-white p-1 shadow-sm">
+            <img
+              :src="miniProgramCodeUrl"
+              alt="诗语择名微信小程序码"
+              class="h-full w-full rounded-lg object-contain"
+              @error="codeLoadFailed = true"
+            />
+          </div>
+          <div v-else class="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-teal-warm text-white shadow-sm">
             <svg viewBox="0 0 24 24" class="h-8 w-8" fill="none" aria-hidden="true">
               <path d="M7.2 18.2c-2.4 0-4.4-1.5-4.4-3.5 0-1.4 1-2.7 2.5-3.2-.1-.3-.1-.6-.1-.9 0-2.2 2.2-4 4.9-4 .6 0 1.2.1 1.7.2C12.6 5.2 14.4 4 16.6 4c2.9 0 5.2 1.8 5.2 4.2 0 .5-.1.9-.3 1.3 1.5.6 2.5 1.8 2.5 3.3 0 2-2 3.5-4.4 3.5H13l-3.4 3v-3.1c-.7.1-1.5.2-2.4.2Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" />
               <path d="M8.2 12.5h.01M12 12.5h.01" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" />
             </svg>
           </div>
-          <p class="mt-4 text-xs tracking-[0.16em] text-warm-gray/70">微信搜索</p>
-          <p class="mt-1 font-serif-name text-lg text-warm-brown">古诗文起名</p>
+          <p class="mt-4 text-xs tracking-[0.16em] text-warm-gray/70">{{ miniProgramCodeUrl && !codeLoadFailed ? '扫码进入' : '微信搜索' }}</p>
+          <p class="mt-1 font-serif-name text-lg text-warm-brown">诗语择名</p>
           <p class="mt-2 text-xs text-warm-gray/65">发现更多取名灵感</p>
         </div>
       </div>
@@ -77,7 +85,7 @@
           <div class="flex items-start justify-between gap-4">
             <div>
               <p class="text-xs tracking-[0.18em] text-teal-warm">WECHAT MINI PROGRAM</p>
-              <h2 id="mini-program-dialog-title" class="mt-2 font-serif-name text-2xl text-warm-brown">进入古诗文起名</h2>
+              <h2 id="mini-program-dialog-title" class="mt-2 font-serif-name text-2xl text-warm-brown">进入诗语择名</h2>
             </div>
             <button
               type="button"
@@ -96,7 +104,7 @@
               <img
                 v-if="miniProgramCodeUrl && !codeLoadFailed"
                 :src="miniProgramCodeUrl"
-                alt="古诗文起名微信小程序码"
+                alt="诗语择名微信小程序码"
                 class="h-32 w-32 rounded-lg bg-white object-contain"
                 @error="codeLoadFailed = true"
               />
@@ -118,7 +126,7 @@
                 class="mt-3 inline-flex items-center gap-2 rounded-lg border border-teal-warm/20 bg-teal-warm/5 px-3 py-2 font-serif-name text-lg text-teal-warm transition hover:bg-teal-warm/10 focus:outline-none focus:ring-2 focus:ring-teal-warm/20"
                 @click="copyMiniProgramName"
               >
-                古诗文起名
+                诗语择名
                 <svg viewBox="0 0 20 20" class="h-4 w-4" fill="none" aria-hidden="true">
                   <rect x="7" y="6" width="9" height="10" rx="1.5" stroke="currentColor" stroke-width="1.4" />
                   <path d="M13 6V4.5A1.5 1.5 0 0 0 11.5 3h-7A1.5 1.5 0 0 0 3 4.5v8A1.5 1.5 0 0 0 4.5 14H7" stroke="currentColor" stroke-width="1.4" />
@@ -135,7 +143,7 @@
             </li>
             <li class="flex gap-2">
               <span class="font-serif-name text-lg text-teal-warm">二</span>
-              <span class="leading-6">搜索「古诗文起名」</span>
+              <span class="leading-6">搜索「诗语择名」</span>
             </li>
             <li class="flex gap-2">
               <span class="font-serif-name text-lg text-teal-warm">三</span>
@@ -181,7 +189,7 @@ function handleEscape(event) {
 }
 
 async function copyMiniProgramName() {
-  const text = '古诗文起名'
+  const text = '诗语择名'
   let copied = false
 
   try {
@@ -209,7 +217,7 @@ async function copyMiniProgramName() {
     textarea.remove()
   }
 
-  copyMessage.value = copied ? '已复制，可在微信中粘贴搜索' : '请手动搜索：古诗文起名'
+  copyMessage.value = copied ? '已复制，可在微信中粘贴搜索' : '请手动搜索：诗语择名'
   clearTimeout(copyTimer)
   copyTimer = setTimeout(() => { copyMessage.value = '' }, 2800)
 }

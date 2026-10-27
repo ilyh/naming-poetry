@@ -68,3 +68,15 @@ export function getStats() {
 export function getPoem(id) {
   return request(`/api/poem/${id}`)
 }
+
+export function createVote(params) {
+  return request('/api/vote', { method: 'POST', data: params })
+}
+
+export function getVote(id) {
+  return request(`/api/vote/${id}`)
+}
+
+export function castVote(id, itemId) {
+  return request(`/api/vote/${id}/cast`, { method: 'POST', data: { itemId } })
+}

@@ -15,9 +15,16 @@
 
     <p class="text-base text-warm-brown leading-relaxed mt-2" v-html="highlightedSentence"></p>
 
-    <div class="mt-auto pt-3 border-t border-stone-300/40 flex justify-between gap-2 text-xs text-warm-gray">
-      <button v-if="name.poemId" @click="openPoem" class="hover:text-teal-warm transition cursor-pointer underline-offset-2 hover:underline">出处：{{ name.sourceNote || (name.sources?.[0] || '未知') }}</button>
-      <span v-else>出处：{{ name.sourceNote || (name.sources?.[0] || '未知') }}</span>
+    <div class="mt-auto pt-3 border-t border-stone-300/40 flex justify-between items-center gap-2 text-xs text-warm-gray">
+      <div class="min-w-0 flex flex-col gap-0.5">
+        <span class="truncate">{{ sourceInfo.main }}</span>
+        <span v-if="sourceInfo.author" class="text-[11px] text-stone-400">{{ sourceInfo.author }}</span>
+      </div>
+      <button
+        v-if="name.poemId"
+        @click="openPoem"
+        class="shrink-0 flex items-center gap-1 px-2.5 py-1 rounded-full bg-teal-mist text-teal-warm font-bold hover:-translate-y-0.5 hover:shadow transition cursor-pointer"
+      >查看全诗 <span class="text-[10px]">›</span></button>
     </div>
     <PoemDetailModal v-if="showPoem && poemData" :poem="poemData" @close="showPoem = false" />
   </div>
@@ -65,6 +72,18 @@ const highlightedSentence = computed(() => {
     }
   }
   return '「' + result + '」'
+})
+
+// sourceNote 格式为「书名·诗名 作者 XXX」，按「 作者 」拆成两行；
+// 无 sourceNote 时退回显示诗句，此时没有作者行
+const sourceInfo = computed(() => {
+  const note = props.name.sourceNote || props.name.sources?.[0] || '未知'
+  const sep = ' 作者 '
+  const idx = note.indexOf(sep)
+  if (idx >= 0) {
+    return { main: '出处：' + note.slice(0, idx), author: '作者 ' + note.slice(idx + sep.length) }
+  }
+  return { main: '出处：' + note, author: '' }
 })
 
 function copyName() {

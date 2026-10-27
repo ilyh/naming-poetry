@@ -27,6 +27,25 @@
         "backgroundColor": "#FAF8F5",
         "enablePullDownRefresh": true
       }
+    },
+    {
+      "path": "pages/favorites/favorites",
+      "style": {
+        "navigationBarTitleText": "我的收藏",
+        "navigationBarBackgroundColor": "#FAF8F5",
+        "navigationBarTextStyle": "black",
+        "backgroundColor": "#FAF8F5"
+      }
+    },
+    {
+      "path": "pages/vote/vote",
+      "style": {
+        "navigationBarTitleText": "名字投票",
+        "navigationBarBackgroundColor": "#FAF8F5",
+        "navigationBarTextStyle": "black",
+        "backgroundColor": "#FAF8F5",
+        "enablePullDownRefresh": true
+      }
     }
   ],
   "globalStyle": {
